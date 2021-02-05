@@ -61,7 +61,7 @@ export default function MeetingLayout(props) {
 const SidebarItem = ({ channel, isActiveChannel }) => (
   <>
     <li>
-      <Link href={`/channels/${channel.id}`}>
+      <Link href={`/r/${channel.id}`}>
         <a className={isActiveChannel ? 'font-bold' : ''}>{channel.slug}</a>
       </Link>
     </li>
