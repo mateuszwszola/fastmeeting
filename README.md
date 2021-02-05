@@ -1,21 +1,22 @@
 # Fastmeeting
 
-Easily create online meetings with video and text chat. 
+Easily create online meetings with video and text chat.
 
 ## Features
 
-- Video & text chat
-- Log in to save a room
+- Voice & Video
+- Live chat
+- No login required to join a meeting
 
 ## Tech Stack
 
 - Frontend:
   - [Next.js](https://nextjs.org) the React Framework for Production
   - [Supabase.js](https://supabase.io/docs/library/getting-started) for user management and data
-  - [Twilio](https://www.twilio.com) communication APIs for Video 
+  - [Twilio](https://www.twilio.com) communication APIs for Voice, Video
 - Backend:
   - [app.supabase.io](https://app.supabase.io/) hosted Postgres database with restful API for usage with Supabase.js
-    
+
 ## Getting Started
 
 Simply clone this repo locally and proceed to the next section.
@@ -49,7 +50,4 @@ yarn
 yarn dev
 ```
 
-Visit http://localhost:3000 and start meeting! Open a channel across two browser tabs to see everything getting updated in realtime 🥳
-
-## License
-MIT
+Visit http://localhost:3000 and start meeting! 🥳

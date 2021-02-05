@@ -1,9 +1,9 @@
 import Layout from '@/components/Layout';
 
-export default function Dashboard() {
+export default function Profile() {
   return (
     <Layout>
-      <h1>Dashboard</h1>
+      <h1>Profile</h1>
     </Layout>
   );
 }
