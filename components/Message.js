@@ -5,6 +5,6 @@ const Message = ({ message }) => (
       <p className="text-white">{message.message}</p>
     </div>
   </>
-)
+);
 
-export default Message
+export default Message;

@@ -1,80 +1,26 @@
-import Link from 'next/link'
-import { useContext } from 'react'
-import UserContext from '~/lib/UserContext'
-import { addChannel } from '~/lib/Store'
+import NextLink from 'next/link';
 
-export default function Layout(props) {
-  const { signOut } = useContext(UserContext)
-
-  const slugify = (text) => {
-    return text
-      .toString()
-      .toLowerCase()
-      .replace(/\s+/g, '-') // Replace spaces with -
-      .replace(/[^\w-]+/g, '') // Remove all non-word chars
-      .replace(/--+/g, '-') // Replace multiple - with single -
-      .replace(/^-+/, '') // Trim - from start of text
-      .replace(/-+$/, '') // Trim - from end of text
-  }
-
-  const newChannel = async () => {
-    const slug = prompt('Please enter your name')
-    if (slug) {
-      addChannel(slugify(slug))
-    }
-  }
-
+export default function Layout({ children }) {
   return (
-    <main className="main flex h-screen w-screen overflow-hidden">
-      {/* Sidebar */}
-      <nav
-        className="w-64 bg-gray-900 text-gray-100 overflow-scroll "
-        style={{ maxWidth: '20%', minWidth: 150, maxHeight: '100vh' }}
-      >
-        <div className="p-2 ">
-          <div className="p-2">
-            <button
-              className="bg-blue-900 hover:bg-blue-800 text-white py-2 px-4 rounded w-full transition duration-150"
-              onClick={() => newChannel()}
-            >
-              New Channel
-            </button>
-          </div>
-          <hr className="m-2" />
-          <div className="p-2">
-            <button
-              className="bg-blue-900 hover:bg-blue-800 text-white py-2 px-4 rounded w-full transition duration-150"
-              onClick={() => signOut()}
-            >
-              Log out
-            </button>
-          </div>
-          <hr className="m-2" />
-          <h4 className="font-bold">Channels</h4>
-          <ul className="channel-list">
-            {props.channels.map((x) => (
-              <SidebarItem
-                channel={x}
-                key={x.id}
-                isActiveChannel={x.id === props.activeChannelId}
-              />
-            ))}
-          </ul>
-        </div>
-      </nav>
+    <div className="text-gray-900 flex flex-col min-h-screen">
+      <header>
+        <nav className="w-full container mx-auto flex justify-between items-center p-4">
+          <NextLink href="/">
+            <a className="font-medium">Fast Meeting</a>
+          </NextLink>
+          <NextLink href="/auth">
+            <a className="px-4 py-2 font-medium tracking-wide text-white transition duration-200 ease-in-out rounded shadow-md bg-black hover:bg-white hover:text-black focus:shadow-outline focus:outline-none transform active:scale-95">
+              Login
+            </a>
+          </NextLink>
+        </nav>
+      </header>
 
-      {/* Messages */}
-      <div className="flex-1 bg-gray-800 h-screen">{props.children}</div>
-    </main>
-  )
+      <main className="flex-1">{children}</main>
+
+      <footer className="w-full container mx-auto p-4">
+        <p className="text-center">Fast Meeting</p>
+      </footer>
+    </div>
+  );
 }
-
-const SidebarItem = ({ channel, isActiveChannel }) => (
-  <>
-    <li>
-      <Link href="/channels/[id]" as={`/channels/${channel.id}`}>
-        <a className={isActiveChannel ? 'font-bold' : ''}>{channel.slug}</a>
-      </Link>
-    </li>
-  </>
-)
