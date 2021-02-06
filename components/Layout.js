@@ -23,7 +23,7 @@ export default function Layout({ children, pageName }) {
               </a>
             </NextLink>
             <NextLink href="/login">
-              <a className="px-4 py-2 font-medium tracking-wide text-white transition duration-200 ease-in-out rounded shadow-md bg-black hover:bg-white hover:text-black focus:shadow-outline focus:outline-none transform active:scale-95">
+              <a className="px-4 py-2 font-medium tracking-wide text-white transition duration-200 ease-in-out rounded shadow-md bg-black dark:bg-gray-700 hover:bg-white hover:text-black dark:hover:bg-gray-600 dark:hover:text-white focus:outline-none focus:bg-gray-600 transform active:scale-95">
                 Login
               </a>
             </NextLink>

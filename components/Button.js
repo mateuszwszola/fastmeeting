@@ -6,7 +6,7 @@ export default function Button({ children, className, ...props }) {
     <button
       {...props}
       className={clsx(
-        'inline-flex items-center justify-center w-full font-medium tracking-wide transition duration-200 ease-in-out rounded shadow-md text-white bg-black hover:bg-white hover:text-black  focus:shadow-outline focus:outline-none transform active:scale-95',
+        'w-full py-2 px-4 font-medium tracking-wide rounded shadow-md text-white bg-black hover:bg-white hover:text-black dark:hover:bg-gray-600 dark:hover:text-white focus:outline-none focus:bg-gray-600 transform transition duration-200 ease-in-out active:scale-95',
         className
       )}
     >

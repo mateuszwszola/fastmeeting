@@ -34,19 +34,22 @@ export default function Home() {
               {createRoom ? 'Create' : 'Join'} room
             </h3>
             <form onSubmit={onSubmit} className="mt-6 w-full max-w-md mx-auto">
-              <label htmlFor="name" className="block mb-1 text-sm font-medium">
-                Display name
+              <label
+                htmlFor="name"
+                className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-200"
+              >
+                Display Name
               </label>
               <input
                 id="name"
                 placeholder="Enter your name"
                 required
                 type="text"
-                className="w-full h-12 px-4 transition duration-200 bg-white dark:bg-gray-800 text-gray-700 border border-gray-300 dark:border-gray-600 rounded block placeholder-gray-500 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                className="w-full h-12 px-4 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded block placeholder-gray-500 dark:placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring"
               />
               <label
                 htmlFor="room"
-                className="block mt-3 mb-1 text-sm font-medium"
+                className="block mt-4 mb-2 text-sm font-medium text-gray-600 dark:text-gray-200"
               >
                 fastmeeting/
               </label>
@@ -55,9 +58,9 @@ export default function Home() {
                 placeholder="Room name"
                 required
                 type="text"
-                className="w-full h-12 px-4 transition duration-200 bg-white dark:bg-gray-800 text-gray-700 border border-gray-300 dark:border-gray-600 rounded block placeholder-gray-500 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                className="w-full h-12 px-4 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded block placeholder-gray-500 dark:placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring"
               />
-              <Button type="submit" className="w-full h-12 px-6 mt-5 mx-auto">
+              <Button type="submit" className="w-full h-12 px-6 mt-6 mx-auto">
                 {createRoom ? 'Create' : 'Join'}
               </Button>
             </form>

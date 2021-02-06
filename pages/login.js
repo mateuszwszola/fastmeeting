@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import Layout from '@/components/Layout';
+import Button from '@/components/Button';
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -94,12 +95,9 @@ export default function Login() {
             </div>
 
             <div className="mt-8">
-              <button
-                onClick={() => handleLogin('LOGIN', username)}
-                className="bg-gray-700 text-white py-2 px-4 w-full tracking-wide rounded hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
-              >
+              <Button onClick={() => handleLogin('LOGIN', username)}>
                 Login
-              </button>
+              </Button>
             </div>
 
             <div className="mt-4 flex items-center justify-between">
