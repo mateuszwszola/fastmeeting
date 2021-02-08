@@ -1,14 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Router from 'next/router';
 import Button from '@/components/Button';
 import { useMeeting } from '@/lib/MeetingContext';
 import { slugify } from '@/utils/helpers';
 
 function RoomForm() {
+  const { joinRoom, getToken, token, identity, roomName } = useMeeting();
   const [isCreating, setIsCreating] = useState(true);
-  const [usernameValue, setUsernameValue] = useState('');
-  const [roomNameValue, setRoomNameValue] = useState('');
-  const { joinRoom } = useMeeting();
+  const [identityValue, setIdentityValue] = useState(identity);
+  const [roomNameValue, setRoomNameValue] = useState(roomName);
+
+  useEffect(() => {
+    if (token && roomName) {
+      Router.push(`/${roomName}`);
+    }
+  }, [roomName, token]);
 
   const onCreateToggle = () => {
     setIsCreating((prev) => !prev);
@@ -17,8 +23,16 @@ function RoomForm() {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    joinRoom(usernameValue, roomNameValue);
-    Router.push(`/${slugify(roomNameValue)}`);
+    const roomSlug = slugify(roomNameValue);
+
+    getToken(identityValue, roomSlug)
+      .then(() => {
+        joinRoom(identityValue, roomSlug);
+        Router.push(`/${roomSlug}`);
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
   };
 
   return (
@@ -34,8 +48,8 @@ function RoomForm() {
           Display Name
         </label>
         <input
-          value={usernameValue}
-          onChange={(e) => setUsernameValue(e.target.value)}
+          value={identityValue}
+          onChange={(e) => setIdentityValue(e.target.value)}
           id="name"
           placeholder="Enter your name"
           required
