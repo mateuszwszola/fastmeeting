@@ -1,7 +1,7 @@
 import { supabase } from '@/lib/supabase';
 
 // Verify and get user data server-side
-const getUser = async (req, res) => {
+export default async function handler(req, res) {
   const token = req.headers.token;
 
   const { data: user, error } = await supabase.auth.api.getUser(token);
@@ -11,6 +11,4 @@ const getUser = async (req, res) => {
   } else {
     return res.status(200).json(user);
   }
-};
-
-export default getUser;
+}

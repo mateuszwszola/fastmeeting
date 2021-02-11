@@ -24,7 +24,7 @@ function useVideoRoom(roomName) {
     [roomName]
   );
 
-  const logout = useCallback(() => {
+  const leave = useCallback(() => {
     setRoom((prevRoom) => {
       if (prevRoom) {
         prevRoom.localParticipant.tracks.forEach((trackPub) => {
@@ -36,7 +36,7 @@ function useVideoRoom(roomName) {
     });
   }, []);
 
-  return { room, connect, logout, isConnecting };
+  return { room, connect, leave, isConnecting };
 }
 
 export default useVideoRoom;

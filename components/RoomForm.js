@@ -1,27 +1,41 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
+import { nanoid } from 'nanoid';
 import Button from '@/components/Button';
 import { useMeeting } from '@/lib/MeetingContext';
 import { slugify } from '@/utils/helpers';
+import fetcher from '@/utils/fetcher';
 
 function RoomForm() {
   const router = useRouter();
-  const { joinRoom, identity, roomName } = useMeeting();
-  const [isCreating, setIsCreating] = useState(true);
+  const { identity, roomName, getToken } = useMeeting();
   const [identityValue, setIdentityValue] = useState(identity);
   const [roomNameValue, setRoomNameValue] = useState(roomName);
+  const [isCreating, setIsCreating] = useState(true);
+  const [error, setError] = useState(null);
 
-  const onCreateToggle = () => {
+  const onCreateToggle = useCallback(() => {
     setIsCreating((prev) => !prev);
-  };
+    setError(null);
+  }, []);
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
-    if (identityValue && roomNameValue) {
-      const roomSlug = slugify(roomNameValue);
-      joinRoom(identityValue, roomSlug);
-      router.push(`/${roomSlug}`);
+    if (!identityValue || (!isCreating && !roomNameValue)) return;
+
+    const roomName = slugify(isCreating ? nanoid() : roomNameValue);
+
+    try {
+      // Make sure a room exists before user will try to join it
+      if (!isCreating) {
+        await fetcher(`/api/video/room?name=${roomName}`);
+      }
+
+      await getToken(identityValue, roomName);
+      router.push(`/${roomName}`);
+    } catch (error) {
+      setError(error);
     }
   };
 
@@ -30,6 +44,7 @@ function RoomForm() {
       <h3 className="text-3xl text-center font-medium">
         {isCreating ? 'Create' : 'Join'} room
       </h3>
+      {error && <p className="text-center">{error.message}</p>}
       <form onSubmit={onSubmit} className="mt-6 w-full max-w-md mx-auto">
         <label
           htmlFor="name"
@@ -46,21 +61,27 @@ function RoomForm() {
           type="text"
           className="w-full h-12 px-4 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded block placeholder-gray-500 dark:placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring"
         />
-        <label
-          htmlFor="roomName"
-          className="block mt-4 mb-2 text-sm font-medium text-gray-600 dark:text-gray-200"
-        >
-          fastmeeting/
-        </label>
-        <input
-          value={roomNameValue}
-          onChange={(e) => setRoomNameValue(e.target.value)}
-          id="roomName"
-          placeholder="Room name"
-          required
-          type="text"
-          className="w-full h-12 px-4 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded block placeholder-gray-500 dark:placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring"
-        />
+        {!isCreating ? (
+          <>
+            <label
+              htmlFor="roomName"
+              className="block mt-4 mb-2 text-sm font-medium text-gray-600 dark:text-gray-200"
+            >
+              fastmeeting/
+            </label>
+            <input
+              value={roomNameValue}
+              onChange={(e) => setRoomNameValue(e.target.value)}
+              id="roomName"
+              placeholder="Room name"
+              required
+              type="text"
+              className="w-full h-12 px-4 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded block placeholder-gray-500 dark:placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring"
+            />
+          </>
+        ) : (
+          ''
+        )}
         <Button type="submit" className="w-full h-12 px-6 mt-6 mx-auto">
           {isCreating ? 'Create' : 'Join'}
         </Button>
