@@ -15,9 +15,11 @@ export default function MeetingLayout(props) {
 
   return (
     <main className="main flex h-screen w-screen overflow-hidden">
+      {/* Messages */}
+      <div className="flex-1 bg-gray-800 h-screen">{props.children}</div>
       {/* Sidebar */}
       <nav
-        className="w-64 bg-gray-900 text-gray-100 overflow-scroll "
+        className="w-64 bg-gray-900 text-gray-100 overflow-scroll"
         style={{ maxWidth: '20%', minWidth: 150, maxHeight: '100vh' }}
       >
         <div className="p-2 ">
@@ -51,9 +53,6 @@ export default function MeetingLayout(props) {
           </ul>
         </div>
       </nav>
-
-      {/* Messages */}
-      <div className="flex-1 bg-gray-800 h-screen">{props.children}</div>
     </main>
   );
 }

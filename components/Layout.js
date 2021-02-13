@@ -2,10 +2,13 @@ import PropTypes from 'prop-types';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import Logo from '@/components/Logo';
+import { useAuth } from '@/lib/AuthContext';
+import Button from '@/components/Button';
 
 export const APP_NAME = 'Fast Meeting';
 
 export default function Layout({ children, pageName }) {
+  const { user, signOut } = useAuth();
   return (
     <>
       <Head>
@@ -22,11 +25,17 @@ export default function Layout({ children, pageName }) {
                 <span className="ml-2">Fast Meeting</span>
               </a>
             </NextLink>
-            <NextLink href="/login">
-              <a className="px-4 py-2 font-medium tracking-wide text-white transition duration-200 ease-in-out rounded shadow-md bg-black dark:bg-gray-700 hover:bg-white hover:text-black dark:hover:bg-gray-600 dark:hover:text-white focus:outline-none focus:bg-gray-600 transform active:scale-95">
-                Login
-              </a>
-            </NextLink>
+            {user ? (
+              <div>
+                <Button onClick={signOut}>Logout</Button>
+              </div>
+            ) : (
+              <NextLink href="/signin">
+                <a className="px-4 py-2 font-medium tracking-wide text-white transition duration-200 ease-in-out rounded shadow-md bg-black dark:bg-gray-700 hover:bg-white hover:text-black dark:hover:bg-gray-600 dark:hover:text-white focus:outline-none focus:bg-gray-600 transform active:scale-95">
+                  Login
+                </a>
+              </NextLink>
+            )}
           </nav>
         </header>
 

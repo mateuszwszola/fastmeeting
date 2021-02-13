@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { nanoid } from 'nanoid';
 import Button from '@/components/Button';
@@ -8,11 +8,19 @@ import fetcher from '@/utils/fetcher';
 
 function RoomForm() {
   const router = useRouter();
+  const { roomName: roomNameParam } = router.query;
   const { identity, roomName, getToken } = useMeeting();
   const [identityValue, setIdentityValue] = useState(identity);
   const [roomNameValue, setRoomNameValue] = useState(roomName);
-  const [isCreating, setIsCreating] = useState(true);
+  const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (roomNameParam) {
+      setRoomNameValue(roomNameParam);
+      setIsCreating(false);
+    }
+  }, [roomNameParam]);
 
   const onCreateToggle = useCallback(() => {
     setIsCreating((prev) => !prev);
@@ -91,7 +99,7 @@ function RoomForm() {
         onClick={onCreateToggle}
         className="mt-6 block mx-auto text-blue-500 hover:text-blue-400 focus:text-blue-600 focus:outline-none"
       >
-        {isCreating ? 'Join' : 'Create'} room instead
+        Or {isCreating ? 'join' : 'create'} room instead
       </button>
     </div>
   );

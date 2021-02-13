@@ -22,7 +22,7 @@ export default function Meeting() {
 
   useEffect(() => {
     const tidyUp = (event) => {
-      if (!event.persisted && room) {
+      if (!event.persisted) {
         leave();
       }
       logout();
