@@ -5,6 +5,15 @@ import Button from '@/components/Button';
 import { useMeeting } from '@/lib/MeetingContext';
 import { slugify } from '@/utils/helpers';
 import fetcher from '@/utils/fetcher';
+import {
+  Box,
+  Heading,
+  Text,
+  FormControl,
+  FormLabel,
+  Input,
+  useColorModeValue,
+} from '@chakra-ui/react';
 
 function RoomForm() {
   const router = useRouter();
@@ -14,6 +23,7 @@ function RoomForm() {
   const [roomNameValue, setRoomNameValue] = useState(roomName);
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState(null);
+  const bgColor = useColorModeValue('white', 'gray.900');
 
   useEffect(() => {
     if (roomNameParam) {
@@ -48,52 +58,63 @@ function RoomForm() {
   };
 
   return (
-    <div className="w-full px-4 py-8 shadow-xl bg-gray-50 dark:bg-gray-800 rounded-lg">
-      <h3 className="text-3xl text-center font-medium">
+    <Box
+      bgColor={bgColor}
+      w="full"
+      px={4}
+      py={8}
+      boxShadow="xl"
+      borderRadius="lg"
+    >
+      <Heading as="h3" fontSize="3xl" textAlign="center" fontWeight="medium">
         {isCreating ? 'Create' : 'Join'} room
-      </h3>
-      {error && <p className="text-center">{error.message}</p>}
-      <form onSubmit={onSubmit} className="mt-6 w-full max-w-md mx-auto">
-        <label
-          htmlFor="name"
-          className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-200"
-        >
-          Display Name
-        </label>
-        <input
-          value={identityValue}
-          onChange={(e) => setIdentityValue(e.target.value)}
-          id="name"
-          placeholder="Enter your name"
-          required
-          type="text"
-          className="w-full h-12 px-4 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded block placeholder-gray-500 dark:placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring"
-        />
-        {!isCreating ? (
-          <>
-            <label
-              htmlFor="roomName"
-              className="block mt-4 mb-2 text-sm font-medium text-gray-600 dark:text-gray-200"
-            >
-              fastmeeting/
-            </label>
-            <input
+      </Heading>
+      {error && (
+        <Text textAlign="center" my={2} color="red.500">
+          {error.message}
+        </Text>
+      )}
+      <Box as="form" onSubmit={onSubmit} mt={6} w="full" maxW="md" mx="auto">
+        <FormControl id="name">
+          <FormLabel>Display Name</FormLabel>
+          <Input
+            type="text"
+            id="name"
+            value={identityValue}
+            onChange={(e) => setIdentityValue(e.target.value)}
+            placeholder="Enter your name"
+            required
+            w="full"
+            h={12}
+            px={4}
+            borderRadius="md"
+            display="block"
+          />
+        </FormControl>
+
+        {!isCreating && (
+          <FormControl mt={2} id="roomName">
+            <FormLabel>fastmeeting/</FormLabel>
+            <Input
+              type="text"
+              id="roomName"
               value={roomNameValue}
               onChange={(e) => setRoomNameValue(e.target.value)}
-              id="roomName"
               placeholder="Room name"
               required
-              type="text"
-              className="w-full h-12 px-4 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded block placeholder-gray-500 dark:placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring"
+              w="full"
+              h={12}
+              px={4}
+              borderRadius="md"
+              display="block"
             />
-          </>
-        ) : (
-          ''
+          </FormControl>
         )}
+
         <Button type="submit" className="w-full h-12 px-6 mt-6 mx-auto">
           {isCreating ? 'Create' : 'Join'}
         </Button>
-      </form>
+      </Box>
 
       <button
         onClick={onCreateToggle}
@@ -101,7 +122,7 @@ function RoomForm() {
       >
         Or {isCreating ? 'join' : 'create'} room instead
       </button>
-    </div>
+    </Box>
   );
 }
 

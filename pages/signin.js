@@ -26,7 +26,15 @@ const SignIn = () => {
     setLoading(true);
     setMessage({});
 
-    const { error } = await signIn({ email });
+    const payload = {
+      email,
+    };
+
+    if (setShowPasswordInput) {
+      payload.password = password;
+    }
+
+    const { error } = await signIn(payload);
     if (error) {
       setMessage({ type: 'error', content: error.message });
     } else if (!password) {

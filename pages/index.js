@@ -1,25 +1,53 @@
 import Layout from '@/components/Layout';
 import RoomForm from '@/components/RoomForm';
+import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 
 export default function Home() {
   return (
     <Layout>
-      <div className="flex flex-col items-center justify-center px-4 pt-16 mx-auto sm:max-w-xl md:max-w-full lg:pt-32 md:px-0 mb-8">
-        <div className="flex flex-col items-center max-w-2xl md:px-8">
-          <div className="max-w-xl mb-10 md:mx-auto sm:text-center lg:max-w-2xl md:mb-12">
-            <h2 className="max-w-lg mb-6 font-sans text-3xl font-bold leading-none tracking-tight sm:text-4xl md:mx-auto">
+      <Flex
+        flexDir="column"
+        align="center"
+        justify="center"
+        px={{ base: 4, md: 0 }}
+        pt={{ base: 16, lg: 32 }}
+        mx="auto"
+        maxW={{ sm: 'xl', md: 'full' }}
+      >
+        <Flex
+          w="full"
+          maxW="2xl"
+          flexDir="column"
+          align="center"
+          px={{ md: 8 }}
+        >
+          <Box
+            maxW="xl"
+            mb={[10, 12]}
+            mx={{ md: 'auto' }}
+            textAlign={{ sm: 'center' }}
+          >
+            <Heading
+              as="h2"
+              maxW="lg"
+              mb={6}
+              fontSize={{ base: '3xl', sm: '4xl' }}
+              fontWeight="bold"
+              lineHeight={1}
+              letterSpacing="tight"
+              mx={{ md: 'auto' }}
+            >
               Online video meetings with live chat
-            </h2>
-            <p className="text-base text-gray-700 dark:text-gray-400 md:text-lg">
+            </Heading>
+            <Text color="gray.400" fontSize={{ md: 'lg' }}>
               Simply create or join the room, invite friends by sending them a
-              link <br />
-              and enjoy the company.
-            </p>
-          </div>
+              link and enjoy the company.
+            </Text>
+          </Box>
 
           <RoomForm />
-        </div>
-      </div>
+        </Flex>
+      </Flex>
     </Layout>
   );
 }

@@ -22,7 +22,7 @@ const SignIn = () => {
     setLoading(true);
     setMessage({});
 
-    const { error, user } = await signUp({ email });
+    const { error, user } = await signUp({ email, password });
     if (error) {
       setMessage({ type: 'error', content: error.message });
     } else {

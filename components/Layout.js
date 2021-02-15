@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types';
 import Head from 'next/head';
 import NextLink from 'next/link';
+import { Box, Flex, Button, HStack, Text } from '@chakra-ui/react';
 import Logo from '@/components/Logo';
 import { useAuth } from '@/lib/AuthContext';
-import Button from '@/components/Button';
 
 export const APP_NAME = 'Fast Meeting';
 
 export default function Layout({ children, pageName }) {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
+
   return (
     <>
       <Head>
@@ -16,35 +17,62 @@ export default function Layout({ children, pageName }) {
           {pageName} | {APP_NAME}
         </title>
       </Head>
-      <div className="text-gray-900 bg-white dark:text-white dark:bg-gray-900 flex flex-col min-h-screen">
+      <Flex minH="100vh" flexDir="column">
         <header>
-          <nav className="w-full container mx-auto flex justify-between items-center p-4">
-            <NextLink href="/">
-              <a className="font-medium inline-flex items-center">
-                <Logo className="text-blue-500" />
-                <span className="ml-2">Fast Meeting</span>
-              </a>
+          <Flex
+            as="nav"
+            w="100%"
+            maxW="1280px"
+            mx="auto"
+            flexDir={['column', 'row']}
+            justify="space-between"
+            align={['flex-start', 'center']}
+            p={4}
+          >
+            <NextLink href="/" passHref>
+              <Button
+                as="a"
+                leftIcon={<Logo color="blue.400" />}
+                variant="link"
+              >
+                Fast Meeting
+              </Button>
             </NextLink>
             {user ? (
-              <div>
-                <Button onClick={signOut}>Logout</Button>
-              </div>
+              <HStack spacing={4}>
+                <NextLink href="/dashboard" passHref>
+                  <Button as="a" variant="link">
+                    Dashboard
+                  </Button>
+                </NextLink>
+                <NextLink href="/account" passHref>
+                  <Button as="a" variant="link">
+                    Account
+                  </Button>
+                </NextLink>
+              </HStack>
             ) : (
-              <NextLink href="/signin">
-                <a className="px-4 py-2 font-medium tracking-wide text-white transition duration-200 ease-in-out rounded shadow-md bg-black dark:bg-gray-700 hover:bg-white hover:text-black dark:hover:bg-gray-600 dark:hover:text-white focus:outline-none focus:bg-gray-600 transform active:scale-95">
+              <NextLink href="/signin" passHref>
+                <Button as="a" colorScheme="blue">
                   Login
-                </a>
+                </Button>
               </NextLink>
             )}
-          </nav>
+          </Flex>
         </header>
 
-        <main className="flex-1">{children}</main>
+        <Box as="main" flex={1}>
+          {children}
+        </Box>
 
-        <footer className="w-full container mx-auto p-4">
-          <p className="text-center text-gray-500">Fast Meeting</p>
-        </footer>
-      </div>
+        <Box as="footer" w="full" p={4}>
+          <Box w="full" maxW="1280px" mx="auto">
+            <Text textAlign="center" color="gray.500">
+              Fast Meeting
+            </Text>
+          </Box>
+        </Box>
+      </Flex>
     </>
   );
 }
