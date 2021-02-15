@@ -1,7 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { nanoid } from 'nanoid';
-import Button from '@/components/Button';
 import { useMeeting } from '@/lib/MeetingContext';
 import { slugify } from '@/utils/helpers';
 import fetcher from '@/utils/fetcher';
@@ -13,6 +12,7 @@ import {
   FormLabel,
   Input,
   useColorModeValue,
+  Button,
 } from '@chakra-ui/react';
 
 function RoomForm() {
@@ -111,17 +111,25 @@ function RoomForm() {
           </FormControl>
         )}
 
-        <Button type="submit" className="w-full h-12 px-6 mt-6 mx-auto">
+        <Button type="submit" w="full" h={12} px={6} mt={6} mx="auto">
           {isCreating ? 'Create' : 'Join'}
         </Button>
       </Box>
 
-      <button
+      <Button
+        variant="link"
         onClick={onCreateToggle}
-        className="mt-6 block mx-auto text-blue-500 hover:text-blue-400 focus:text-blue-600 focus:outline-none"
+        mt={6}
+        display="block"
+        mx="auto"
+        color="blue.500"
+        _focus={{
+          outline: 'none',
+          color: 'blue.400',
+        }}
       >
         Or {isCreating ? 'join' : 'create'} room instead
-      </button>
+      </Button>
     </Box>
   );
 }

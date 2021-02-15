@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import { Box, Flex, Button, HStack, Text } from '@chakra-ui/react';
-import Logo from '@/components/Logo';
+import Logo from '@/components/icons/Logo';
 import { useAuth } from '@/lib/AuthContext';
 
 export const APP_NAME = 'Fast Meeting';
