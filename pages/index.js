@@ -30,16 +30,15 @@ export default function Home() {
             <Heading
               as="h2"
               maxW="lg"
-              mb={6}
               fontSize={{ base: '3xl', sm: '4xl' }}
               fontWeight="bold"
               lineHeight={1}
               letterSpacing="tight"
-              mx={{ md: 'auto' }}
+              mx={{ sm: 'auto' }}
             >
               Online video meetings with live chat
             </Heading>
-            <Text color="gray.400" fontSize={{ md: 'lg' }}>
+            <Text mt={6} color="gray.500" fontSize={{ md: 'lg' }}>
               Simply create or join the room, invite friends by sending them a
               link and enjoy the company.
             </Text>

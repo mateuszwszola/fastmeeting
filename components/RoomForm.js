@@ -1,36 +1,28 @@
-import { useState, useCallback, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { nanoid } from 'nanoid';
 import { useMeeting } from '@/lib/MeetingContext';
-import { slugify } from '@/utils/helpers';
 import fetcher from '@/utils/fetcher';
+import { slugify } from '@/utils/helpers';
 import {
   Box,
-  Heading,
-  Text,
+  Button,
   FormControl,
   FormLabel,
+  Heading,
   Input,
+  Text,
   useColorModeValue,
-  Button,
 } from '@chakra-ui/react';
+import { nanoid } from 'nanoid';
+import { useRouter } from 'next/router';
+import { useCallback, useState } from 'react';
 
 function RoomForm() {
   const router = useRouter();
-  const { roomName: roomNameParam } = router.query;
   const { identity, roomName, getToken } = useMeeting();
   const [identityValue, setIdentityValue] = useState(identity);
   const [roomNameValue, setRoomNameValue] = useState(roomName);
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState(null);
   const bgColor = useColorModeValue('white', 'gray.900');
-
-  useEffect(() => {
-    if (roomNameParam) {
-      setRoomNameValue(roomNameParam);
-      setIsCreating(false);
-    }
-  }, [roomNameParam]);
 
   const onCreateToggle = useCallback(() => {
     setIsCreating((prev) => !prev);
@@ -65,8 +57,14 @@ function RoomForm() {
       py={8}
       boxShadow="xl"
       borderRadius="lg"
+      bgGradient="linear(yellow.50 0%, gray.50 30%, blue.50 60%)"
     >
-      <Heading as="h3" fontSize="3xl" textAlign="center" fontWeight="medium">
+      <Heading
+        as="h3"
+        fontSize={['2xl', '3xl']}
+        textAlign="center"
+        fontWeight="medium"
+      >
         {isCreating ? 'Create' : 'Join'} room
       </Heading>
       {error && (
@@ -89,11 +87,12 @@ function RoomForm() {
             px={4}
             borderRadius="md"
             display="block"
+            bgColor="white"
           />
         </FormControl>
 
         {!isCreating && (
-          <FormControl mt={2} id="roomName">
+          <FormControl mt={3} id="roomName">
             <FormLabel>fastmeeting/</FormLabel>
             <Input
               type="text"
@@ -107,11 +106,21 @@ function RoomForm() {
               px={4}
               borderRadius="md"
               display="block"
+              bgColor="white"
             />
           </FormControl>
         )}
 
-        <Button type="submit" w="full" h={12} px={6} mt={6} mx="auto">
+        <Button
+          type="submit"
+          w="full"
+          colorScheme="yellow"
+          h={12}
+          px={6}
+          mt={6}
+          mx="auto"
+          // bgGradient="linear(to-r, blue.400, blue.500)"
+        >
           {isCreating ? 'Create' : 'Join'}
         </Button>
       </Box>

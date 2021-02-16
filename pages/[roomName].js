@@ -4,6 +4,7 @@ import { useMeeting } from '@/lib/MeetingContext';
 import useVideoRoom from '@/hooks/useVideoRoom';
 import Layout from '@/components/Layout';
 import Participant from '@/components/Participant';
+import { Flex, Heading, Button } from '@chakra-ui/react';
 
 export default function Meeting() {
   const router = useRouter();
@@ -71,20 +72,16 @@ export default function Meeting() {
 
   return (
     <Layout>
-      <div className="flex justify-between items-center">
-        <h2>Room: {roomName}</h2>
-        <button
-          disabled={isConnecting}
-          className="py-2 px-4 bg-blue-500 rounded shadow"
-          onClick={handleLogout}
-        >
+      <Flex justify="space-between" align="center">
+        <Heading as="h2">Room: {roomName}</Heading>
+        <Button isLoading={isConnecting} onClick={handleLogout}>
           Leave Room
-        </button>
-      </div>
+        </Button>
+      </Flex>
 
       <div>{room && <Participant participant={room.localParticipant} />}</div>
 
-      <h3>Remote participants</h3>
+      <Heading as="h3">Remote participants</Heading>
       <div>{remoteParticipants}</div>
     </Layout>
   );

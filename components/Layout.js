@@ -32,32 +32,34 @@ export default function Layout({ children, pageName }) {
             <NextLink href="/" passHref>
               <Button
                 as="a"
-                leftIcon={<Logo color="blue.400" />}
                 variant="link"
+                leftIcon={<Logo color="yellow.400" />}
               >
                 Fast Meeting
               </Button>
             </NextLink>
-            {user ? (
-              <HStack spacing={4}>
-                <NextLink href="/dashboard" passHref>
-                  <Button as="a" variant="link">
-                    Dashboard
+            <HStack spacing={4} mt={[4, 0]}>
+              {user ? (
+                <>
+                  <NextLink href="/dashboard" passHref>
+                    <Button as="a" variant="link">
+                      Dashboard
+                    </Button>
+                  </NextLink>
+                  <NextLink href="/account" passHref>
+                    <Button as="a" variant="link">
+                      Account
+                    </Button>
+                  </NextLink>
+                </>
+              ) : (
+                <NextLink href="/signin" passHref>
+                  <Button as="a" colorScheme="blue">
+                    Login
                   </Button>
                 </NextLink>
-                <NextLink href="/account" passHref>
-                  <Button as="a" variant="link">
-                    Account
-                  </Button>
-                </NextLink>
-              </HStack>
-            ) : (
-              <NextLink href="/signin" passHref>
-                <Button as="a" colorScheme="blue">
-                  Login
-                </Button>
-              </NextLink>
-            )}
+              )}
+            </HStack>
           </Flex>
         </header>
 
