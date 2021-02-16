@@ -1,10 +1,11 @@
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { Box, Button, Flex, Heading, useToast } from '@chakra-ui/react';
+import CreateRoom from '@/components/dashboard/CreateRoom';
 import RoomTable from '@/components/dashboard/RoomTable';
 import Layout from '@/components/Layout';
 import { useAuth } from '@/lib/AuthContext';
 import { addRoom, fetchUserRooms } from '@/lib/db';
+import { Box, Flex, Heading, useToast } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 export default function Dashboard() {
   const router = useRouter();
@@ -29,7 +30,7 @@ export default function Dashboard() {
       .catch((err) => {
         toast({
           title: 'An error occurred.',
-          description: err.message || 'Unable to fetch user rooms.',
+          description: err.message || 'Unable to load rooms.',
           status: 'error',
           duration: 5000,
           isClosable: true,
@@ -40,9 +41,22 @@ export default function Dashboard() {
       });
   }, [toast, user]);
 
-  const onAddRoom = async () => {
-    // TODO
-    // addRoom();
+  const onAddRoom = async (newRoomName) => {
+    if (!newRoomName) return;
+
+    addRoom(newRoomName, user.id)
+      .then((newRoom) => {
+        setRooms((prevRooms) => [...prevRooms, newRoom]);
+      })
+      .catch((err) => {
+        toast({
+          title: 'An error occurred.',
+          description: err.message || 'Unable to add room.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      });
   };
 
   return (
@@ -53,9 +67,10 @@ export default function Dashboard() {
             Your Rooms
           </Heading>
 
-          <Button colorScheme="yellow" onClick={onAddRoom}>
-            Add room
-          </Button>
+          <CreateRoom
+            onAddRoom={onAddRoom}
+            currentRoomsNumber={rooms?.length}
+          />
         </Flex>
 
         <RoomTable rooms={rooms} isLoadingRooms={isLoadingRooms} />
