@@ -54,7 +54,7 @@ export default function Layout({ children, pageName }) {
                 </>
               ) : (
                 <NextLink href="/signin" passHref>
-                  <Button as="a" colorScheme="blue">
+                  <Button as="a" colorScheme="yellow">
                     Login
                   </Button>
                 </NextLink>

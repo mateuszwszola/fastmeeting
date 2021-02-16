@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Flex,
+  Skeleton,
   Table,
   Tbody,
   Td,
@@ -11,12 +12,57 @@ import {
   Th,
   Thead,
   Tr,
+  useColorModeValue,
   VisuallyHidden,
 } from '@chakra-ui/react';
 
 export const MAX_PROFILE_ROOMS = 3;
 
-const RoomTable = ({ rooms }) => {
+const SkeletonRow = ({ width }) => (
+  <Tr>
+    <Td>
+      <Skeleton height="10px" w={width} my={2} />
+    </Td>
+    <Td>
+      <Skeleton height="10px" w={width} my={2} />
+    </Td>
+    <Td>
+      <Skeleton height="10px" w={width} my={2} />
+    </Td>
+  </Tr>
+);
+
+const RoomTable = ({ rooms, isLoadingRooms }) => {
+  const tableHeaderColor = useColorModeValue('gray.50', 'gray.700');
+
+  const roomListItems = rooms?.map((room) => (
+    <Tr key={room.id}>
+      <Td whiteSpace="nowrap">{room.name}</Td>
+      <Td whiteSpace="nowrap">
+        <NextLink href={`/${room.slug}`} passHref>
+          <Button as="a" variant="link" colorScheme="blue">
+            /{room.slug}
+          </Button>
+        </NextLink>
+      </Td>
+      <Td whiteSpace="nowrap" textAlign="right">
+        <Button variant="link" colorScheme="blue">
+          Edit
+        </Button>
+      </Td>
+    </Tr>
+  ));
+
+  const skeletonRows = (
+    <>
+      <SkeletonRow width="75px" />
+      <SkeletonRow width="125px" />
+      <SkeletonRow width="50px" />
+    </>
+  );
+
+  const content = isLoadingRooms ? skeletonRows : roomListItems;
+
   return (
     <Flex mt={[6, 12]} flexDir="column">
       <Box overflowX="auto" my={-2} mx={{ sm: -6, lg: -8 }}>
@@ -35,7 +81,7 @@ const RoomTable = ({ rooms }) => {
             borderRadius={{ sm: 'lg' }}
           >
             <Table minW="full">
-              <Thead bgColor="gray.50">
+              <Thead bgColor={tableHeaderColor}>
                 <Tr>
                   <Th>Name</Th>
                   <Th>URL</Th>
@@ -44,29 +90,12 @@ const RoomTable = ({ rooms }) => {
                   </Th>
                 </Tr>
               </Thead>
-              <Tbody>
-                {rooms.map((room) => (
-                  <Tr key={room.id}>
-                    <Td whiteSpace="nowrap">{room.name}</Td>
-                    <Td whiteSpace="nowrap">
-                      <NextLink href={`/${room.slug}`} passHref>
-                        <Button as="a" variant="link" colorScheme="blue">
-                          /{room.slug}
-                        </Button>
-                      </NextLink>
-                    </Td>
-                    <Td whiteSpace="nowrap" textAlign="right">
-                      <Button variant="link" colorScheme="blue">
-                        Edit
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))}
-              </Tbody>
+              <Tbody>{content}</Tbody>
               <Tfoot>
                 <Tr>
                   <Th colSpan="3" textAlign="center">
-                    2 of {MAX_PROFILE_ROOMS}
+                    {isLoadingRooms ? '...' : rooms.length} of{' '}
+                    {MAX_PROFILE_ROOMS}
                   </Th>
                 </Tr>
               </Tfoot>
@@ -78,27 +107,9 @@ const RoomTable = ({ rooms }) => {
   );
 };
 
-const rooms = [
-  {
-    id: '1',
-    name: 'Daily Standup',
-    slug: 'daily-standup',
-    owner_id: 'uuid-1',
-  },
-  {
-    id: '2',
-    name: 'Fun Time',
-    slug: 'fun-time',
-    owner_id: 'uuid-2',
-  },
-];
-
-RoomTable.defaultProps = {
-  rooms,
-};
-
 RoomTable.propTypes = {
-  rooms: PropTypes.array.isRequired,
+  rooms: PropTypes.array,
+  isLoadingRooms: PropTypes.bool.isRequired,
 };
 
 export default RoomTable;

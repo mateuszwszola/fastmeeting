@@ -9,6 +9,7 @@ import {
   Heading,
   Input,
   Text,
+  useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { nanoid } from 'nanoid';
@@ -23,6 +24,7 @@ function RoomForm() {
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState(null);
   const bgColor = useColorModeValue('white', 'gray.900');
+  const { colorMode } = useColorMode();
 
   const onCreateToggle = useCallback(() => {
     setIsCreating((prev) => !prev);
@@ -51,13 +53,18 @@ function RoomForm() {
 
   return (
     <Box
-      bgColor={bgColor}
       w="full"
       px={4}
       py={8}
+      mb={8}
       boxShadow="xl"
       borderRadius="lg"
-      bgGradient="linear(yellow.50 0%, gray.50 30%, blue.50 60%)"
+      bgGradient={
+        colorMode === 'light'
+          ? 'linear(yellow.50 0%, gray.50 30%, blue.50 60%)'
+          : null
+      }
+      bgColor={bgColor}
     >
       <Heading
         as="h3"
@@ -119,7 +126,6 @@ function RoomForm() {
           px={6}
           mt={6}
           mx="auto"
-          // bgGradient="linear(to-r, blue.400, blue.500)"
         >
           {isCreating ? 'Create' : 'Join'}
         </Button>

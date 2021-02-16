@@ -25,7 +25,7 @@ const SignIn = () => {
   const [message, setMessage] = useState({ type: '', content: '' });
   const router = useRouter();
   const { signUp } = useAuth();
-  const bgColor = useColorModeValue('white', 'black');
+  const bgColor = useColorModeValue('white', 'gray.900');
   const textColor = useColorModeValue('gray.700', 'white');
 
   const handleSignUp = async (e) => {
