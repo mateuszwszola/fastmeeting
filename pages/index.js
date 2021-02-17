@@ -28,9 +28,9 @@ export default function Home() {
             textAlign={{ sm: 'center' }}
           >
             <Heading
-              as="h2"
+              as="h1"
+              size="xl"
               maxW="lg"
-              fontSize={{ base: '3xl', sm: '4xl' }}
               fontWeight="bold"
               lineHeight={1}
               letterSpacing="tight"

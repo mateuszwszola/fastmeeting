@@ -3,6 +3,8 @@ import NextLink from 'next/link';
 import {
   Box,
   Button,
+  ButtonGroup,
+  CloseButton,
   Flex,
   Skeleton,
   Table,
@@ -15,6 +17,7 @@ import {
   useColorModeValue,
   VisuallyHidden,
 } from '@chakra-ui/react';
+import { useState } from 'react';
 
 export const MAX_PROFILE_ROOMS = 3;
 
@@ -32,8 +35,9 @@ const SkeletonRow = ({ width }) => (
   </Tr>
 );
 
-const RoomTable = ({ rooms, isLoadingRooms }) => {
+const RoomTable = ({ rooms, isLoadingRooms, onDelete }) => {
   const tableHeaderColor = useColorModeValue('gray.50', 'gray.700');
+  const [isEditting, setIsEditting] = useState(false);
 
   const roomListItems = rooms?.map((room) => (
     <Tr key={room.id}>
@@ -46,9 +50,22 @@ const RoomTable = ({ rooms, isLoadingRooms }) => {
         </NextLink>
       </Td>
       <Td whiteSpace="nowrap" textAlign="right">
-        <Button variant="link" colorScheme="blue">
-          Edit
-        </Button>
+        {isEditting ? (
+          <ButtonGroup size="sm" variant="outline" spacing="6">
+            <Button colorScheme="red" onClick={() => onDelete(room.id)}>
+              Delete
+            </Button>
+            <CloseButton onClick={() => setIsEditting(false)} />
+          </ButtonGroup>
+        ) : (
+          <Button
+            onClick={() => setIsEditting(true)}
+            variant="link"
+            colorScheme="blue"
+          >
+            Edit
+          </Button>
+        )}
       </Td>
     </Tr>
   ));
@@ -110,6 +127,7 @@ const RoomTable = ({ rooms, isLoadingRooms }) => {
 RoomTable.propTypes = {
   rooms: PropTypes.array,
   isLoadingRooms: PropTypes.bool.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default RoomTable;

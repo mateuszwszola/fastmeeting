@@ -23,7 +23,8 @@ function RoomForm() {
   const [roomNameValue, setRoomNameValue] = useState(roomName);
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState(null);
-  const bgColor = useColorModeValue('white', 'gray.900');
+  const boxBgColor = useColorModeValue('white', 'gray.900');
+  const inputBgColor = useColorModeValue('white', 'gray.800');
   const { colorMode } = useColorMode();
 
   const onCreateToggle = useCallback(() => {
@@ -60,11 +61,9 @@ function RoomForm() {
       boxShadow="xl"
       borderRadius="lg"
       bgGradient={
-        colorMode === 'light'
-          ? 'linear(yellow.50 0%, gray.50 30%, blue.50 60%)'
-          : null
+        colorMode === 'light' ? 'linear(to-r, blue.100, yellow.100)' : null
       }
-      bgColor={bgColor}
+      bgColor={boxBgColor}
     >
       <Heading
         as="h3"
@@ -94,7 +93,7 @@ function RoomForm() {
             px={4}
             borderRadius="md"
             display="block"
-            bgColor="white"
+            bgColor={inputBgColor}
           />
         </FormControl>
 
@@ -113,12 +112,13 @@ function RoomForm() {
               px={4}
               borderRadius="md"
               display="block"
-              bgColor="white"
+              bgColor={inputBgColor}
             />
           </FormControl>
         )}
 
         <Button
+          variant={colorMode === 'light' ? 'solid' : 'outline'}
           type="submit"
           w="full"
           colorScheme="yellow"
@@ -133,15 +133,11 @@ function RoomForm() {
 
       <Button
         variant="link"
+        colorScheme="blue"
         onClick={onCreateToggle}
         mt={6}
         display="block"
         mx="auto"
-        color="blue.500"
-        _focus={{
-          outline: 'none',
-          color: 'blue.400',
-        }}
       >
         Or {isCreating ? 'join' : 'create'} room instead
       </Button>

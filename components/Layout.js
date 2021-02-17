@@ -24,9 +24,9 @@ export default function Layout({ children, pageName }) {
             w="100%"
             maxW="1280px"
             mx="auto"
-            flexDir={['column', 'row']}
+            flexWrap="wrap"
             justify="space-between"
-            align={['flex-start', 'center']}
+            align="center"
             p={4}
           >
             <NextLink href="/" passHref>
@@ -38,7 +38,7 @@ export default function Layout({ children, pageName }) {
                 Fast Meeting
               </Button>
             </NextLink>
-            <HStack spacing={4} mt={[4, 0]}>
+            <HStack spacing={4}>
               {user ? (
                 <>
                   <NextLink href="/dashboard" passHref>
