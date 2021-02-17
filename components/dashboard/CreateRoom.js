@@ -1,10 +1,18 @@
 import { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, ButtonGroup, Flex, Input, Text } from '@chakra-ui/react';
+import {
+  Button,
+  ButtonGroup,
+  Flex,
+  Input,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { slugify } from '@/utils/helpers';
 
 const CreateRoomInput = ({ value, onChange }) => {
   const inputRef = useRef(null);
+  const inputBgColor = useColorModeValue('white', 'gray.800');
 
   useEffect(() => {
     inputRef.current && inputRef.current.focus();
@@ -18,6 +26,7 @@ const CreateRoomInput = ({ value, onChange }) => {
       onChange={(e) => onChange(e.target.value)}
       placeholder="Enter room name"
       h={12}
+      bgColor={inputBgColor}
     />
   );
 };

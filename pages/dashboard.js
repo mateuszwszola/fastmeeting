@@ -91,7 +91,7 @@ export default function Dashboard() {
             Your Rooms
           </Heading>
 
-          {!isLoadingRooms && rooms.length > 0 && (
+          {!isLoadingRooms && (
             <CreateRoom
               onAddRoom={onAddRoom}
               currentRoomsNumber={rooms?.length}
