@@ -1,5 +1,4 @@
 import { useMeeting } from '@/lib/MeetingContext';
-import fetcher from '@/utils/fetcher';
 import { slugify } from '@/utils/helpers';
 import {
   Box,
@@ -9,23 +8,20 @@ import {
   Heading,
   Input,
   Text,
-  useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 
 function RoomForm() {
   const router = useRouter();
-  const { identity, roomName, getToken } = useMeeting();
+  const { identity, roomName, joinRoom, createRoom } = useMeeting();
   const [identityValue, setIdentityValue] = useState(identity);
   const [roomNameValue, setRoomNameValue] = useState(roomName);
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState(null);
-  const boxBgColor = useColorModeValue('white', 'gray.900');
-  const inputBgColor = useColorModeValue('gray.50', 'gray.800');
-  const { colorMode } = useColorMode();
+  const boxBgColor = useColorModeValue('white', 'black');
+  const inputBgColor = useColorModeValue('gray.50', 'gray.900');
 
   const onCreateToggle = useCallback(() => {
     setIsCreating((prev) => !prev);
@@ -37,16 +33,15 @@ function RoomForm() {
 
     if (!identityValue || (!isCreating && !roomNameValue)) return;
 
-    const roomName = slugify(isCreating ? nanoid() : roomNameValue);
-
     try {
-      // Make sure a room exists before user will try to join it
-      if (!isCreating) {
-        await fetcher(`/api/video/room?name=${roomName}`);
+      if (isCreating) {
+        const { roomName } = await createRoom(identityValue);
+        router.push(`/${roomName}`);
+      } else {
+        const roomName = slugify(roomNameValue);
+        await joinRoom(identityValue, roomName);
+        router.push(`/${roomName}`);
       }
-
-      await getToken(identityValue, roomName);
-      router.push(`/${roomName}`);
     } catch (error) {
       setError(error);
     }
@@ -58,7 +53,7 @@ function RoomForm() {
       px={4}
       py={8}
       boxShadow="xl"
-      borderRadius="lg"
+      borderRadius="xl"
       bgColor={boxBgColor}
     >
       <Heading
@@ -70,11 +65,11 @@ function RoomForm() {
         {isCreating ? 'Create' : 'Join'} room
       </Heading>
       {error && (
-        <Text textAlign="center" my={2} color="red.500">
+        <Text textAlign="center" my={2}>
           {error.message}
         </Text>
       )}
-      <Box as="form" onSubmit={onSubmit} mt={6} w="full" maxW="sm" mx="auto">
+      <Box as="form" onSubmit={onSubmit} mt={6} w="full" maxW="xs" mx="auto">
         <FormControl id="name">
           <FormLabel>Display Name</FormLabel>
           <Input
@@ -114,7 +109,6 @@ function RoomForm() {
         )}
 
         <Button
-          variant={colorMode === 'light' ? 'solid' : 'outline'}
           type="submit"
           w="full"
           colorScheme="blue"

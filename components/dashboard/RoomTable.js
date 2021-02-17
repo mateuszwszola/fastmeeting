@@ -77,8 +77,8 @@ RoomListItem.propTypes = {
 };
 
 const RoomTable = ({ rooms, isLoadingRooms, onDelete }) => {
-  const boxColor = useColorModeValue('white', 'gray.700');
-  const tableHeaderColor = useColorModeValue('gray.100', 'gray.700');
+  const boxColor = useColorModeValue('white', 'black');
+  const tableHeaderColor = useColorModeValue('gray.100', 'gray.800');
 
   const skeletonRows = (
     <>
@@ -103,7 +103,12 @@ const RoomTable = ({ rooms, isLoadingRooms, onDelete }) => {
   }
 
   return (
-    <Flex mt={[4, 6]} flexDir="column" bgColor={boxColor}>
+    <Flex
+      mt={[4, 6]}
+      flexDir="column"
+      bgColor={boxColor}
+      borderRadius={{ sm: 'lg' }}
+    >
       <Box overflowX="auto" my={-2} mx={{ sm: -6, lg: -8 }}>
         <Box
           py={2}

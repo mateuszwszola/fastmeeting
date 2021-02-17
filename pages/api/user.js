@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/lib/initSupabase';
 
 // Verify and get user data server-side
 export default async function handler(req, res) {

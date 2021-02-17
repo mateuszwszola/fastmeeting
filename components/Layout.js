@@ -16,8 +16,9 @@ export const APP_NAME = 'Fast Meeting';
 
 export default function Layout({ children, pageName }) {
   const { user } = useAuth();
-  const bgColor = useColorModeValue('white', 'gray.900');
-  const borderColor = useColorModeValue('gray.200', 'gray.900');
+  const bgColor = useColorModeValue('gray.50', 'gray.900');
+  const headerBgColor = useColorModeValue('white', 'gray.800');
+  const borderColor = useColorModeValue('gray.200', 'black');
 
   return (
     <>
@@ -26,10 +27,10 @@ export default function Layout({ children, pageName }) {
           {pageName} | {APP_NAME}
         </title>
       </Head>
-      <Flex minH="100vh" flexDir="column" bgColor="gray.50">
+      <Flex minH="100vh" flexDir="column" bgColor={bgColor}>
         <Box
           as="header"
-          bgColor={bgColor}
+          bgColor={headerBgColor}
           borderBottom="1px"
           borderColor={borderColor}
         >
@@ -47,8 +48,7 @@ export default function Layout({ children, pageName }) {
               <Button
                 as="a"
                 variant="link"
-                color="gray.700"
-                leftIcon={<Logo w={8} h={8} color="blue.500" />}
+                leftIcon={<Logo w={8} h={8} color="blue.400" />}
               >
                 <Text as="span" display={['none', 'inline']}>
                   Fast Meeting
@@ -59,12 +59,12 @@ export default function Layout({ children, pageName }) {
               {user ? (
                 <>
                   <NextLink href="/dashboard" passHref>
-                    <Button as="a" variant="link" color="gray.700">
+                    <Button as="a" variant="link">
                       Dashboard
                     </Button>
                   </NextLink>
                   <NextLink href="/account" passHref>
-                    <Button as="a" variant="link" color="gray.700">
+                    <Button as="a" variant="link">
                       Account
                     </Button>
                   </NextLink>

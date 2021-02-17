@@ -1,4 +1,4 @@
-import { twilioAdminClient } from '@/lib/twilioAdmin';
+import { twilioAdminClient } from '@/lib/initTwilioAdmin';
 
 export default async function handler(req, res) {
   try {

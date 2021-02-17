@@ -42,7 +42,8 @@ export default function Home() {
             </Heading>
             <Text mt={6} color="gray.500" fontSize={{ md: 'lg' }}>
               Simply create or join the room, invite friends by sending them a
-              link and enjoy the company.
+              link <br />
+              and enjoy the company.
             </Text>
           </Box>
 
