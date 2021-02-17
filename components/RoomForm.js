@@ -20,8 +20,9 @@ function RoomForm() {
   const [roomNameValue, setRoomNameValue] = useState(roomName);
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState(null);
-  const boxBgColor = useColorModeValue('white', 'black');
-  const inputBgColor = useColorModeValue('gray.50', 'gray.900');
+  const bgColor = useColorModeValue('white', 'gray.900');
+  const textColor = useColorModeValue('gray.700', 'white');
+  const inputBgColor = useColorModeValue('gray.50', 'gray.800');
 
   const onCreateToggle = useCallback(() => {
     setIsCreating((prev) => !prev);
@@ -54,9 +55,10 @@ function RoomForm() {
       py={8}
       boxShadow="xl"
       borderRadius="xl"
-      bgColor={boxBgColor}
+      bgColor={bgColor}
     >
       <Heading
+        color={textColor}
         as="h3"
         fontSize={['2xl', '3xl']}
         textAlign="center"

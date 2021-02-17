@@ -16,9 +16,9 @@ export const APP_NAME = 'Fast Meeting';
 
 export default function Layout({ children, pageName }) {
   const { user } = useAuth();
-  const bgColor = useColorModeValue('gray.50', 'gray.900');
-  const headerBgColor = useColorModeValue('white', 'gray.800');
-  const borderColor = useColorModeValue('gray.200', 'black');
+  const bgColor = useColorModeValue('gray.50', 'black');
+  const headerBgColor = useColorModeValue('white', 'black');
+  const borderColor = useColorModeValue('gray.200', 'gray.800');
 
   return (
     <>
@@ -31,7 +31,7 @@ export default function Layout({ children, pageName }) {
         <Box
           as="header"
           bgColor={headerBgColor}
-          borderBottom="1px"
+          borderBottom="2px"
           borderColor={borderColor}
         >
           <Flex
@@ -48,9 +48,9 @@ export default function Layout({ children, pageName }) {
               <Button
                 as="a"
                 variant="link"
-                leftIcon={<Logo w={8} h={8} color="blue.400" />}
+                leftIcon={<Logo w={8} h={8} color="blue.500" />}
               >
-                <Text as="span" display={['none', 'inline']}>
+                <Text as="span" display={['none', 'inline']} fontWeight="bold">
                   Fast Meeting
                 </Text>
               </Button>
