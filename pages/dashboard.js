@@ -1,11 +1,11 @@
+import { useEffect, useState, useCallback } from 'react';
+import { useRouter } from 'next/router';
+import { Box, Flex, Heading, useToast } from '@chakra-ui/react';
 import CreateRoom from '@/components/dashboard/CreateRoom';
 import RoomTable from '@/components/dashboard/RoomTable';
 import Layout from '@/components/Layout';
 import { useAuth } from '@/lib/AuthContext';
 import { addRoom, deleteRoom, fetchUserRooms } from '@/lib/db';
-import { Box, Flex, Heading, useToast } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 
 export default function Dashboard() {
   const router = useRouter();
@@ -41,52 +41,62 @@ export default function Dashboard() {
       });
   }, [toast, user]);
 
-  const onAddRoom = async (newRoomName) => {
-    if (!newRoomName) return;
+  const onAddRoom = useCallback(
+    async (newRoomName) => {
+      if (!newRoomName || !user) return;
 
-    addRoom(newRoomName, user.id)
-      .then((newRoom) => {
-        setRooms((prevRooms) => [...prevRooms, newRoom]);
-      })
-      .catch((err) => {
-        toast({
-          title: 'An error occurred.',
-          description: err.message || 'Unable to add room.',
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
+      addRoom(newRoomName, user.id)
+        .then((newRoom) => {
+          setRooms((prevRooms) => [...prevRooms, newRoom]);
+        })
+        .catch((err) => {
+          toast({
+            title: 'An error occurred.',
+            description: err.message || 'Unable to add room.',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          });
         });
-      });
-  };
+    },
+    [toast, user]
+  );
 
-  const onDeleteRoom = async (roomId) => {
-    deleteRoom(roomId)
-      .then(() => {
-        setRooms((prevRooms) => prevRooms.filter((room) => room.id !== roomId));
-      })
-      .catch((err) => {
-        toast({
-          title: 'An error occurred.',
-          description: err.message || 'Unable to delete room.',
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
+  const onDeleteRoom = useCallback(
+    async (roomId) => {
+      deleteRoom(roomId)
+        .then(() => {
+          setRooms((prevRooms) =>
+            prevRooms.filter((room) => room.id !== roomId)
+          );
+        })
+        .catch((err) => {
+          toast({
+            title: 'An error occurred.',
+            description: err.message || 'Unable to delete room.',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          });
         });
-      });
-  };
+    },
+    [toast]
+  );
 
   return (
     <Layout>
-      <Box w="full" maxW="1280px" px={4} pt={{ base: 16, lg: 32 }} mx="auto">
+      <Box w="full" maxW="960px" px={4} pt={16} mx="auto">
         <Flex justify="space-between">
-          <Heading as="h2" size="lg">
+          <Heading as="h2" size="xl">
             Your Rooms
           </Heading>
 
-          <CreateRoom
-            onAddRoom={onAddRoom}
-            currentRoomsNumber={rooms?.length}
-          />
+          {!isLoadingRooms && rooms.length > 0 && (
+            <CreateRoom
+              onAddRoom={onAddRoom}
+              currentRoomsNumber={rooms?.length}
+            />
+          )}
         </Flex>
 
         <RoomTable

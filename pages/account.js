@@ -16,13 +16,13 @@ export default function Account() {
 
   return (
     <Layout>
-      <Box w="full" maxW="1280px" px={4} pt={{ base: 16, lg: 32 }} mx="auto">
+      <Box w="full" maxW="960px" px={4} pt={16} mx="auto">
         <Flex justify="space-between">
-          <Heading as="h2" size="lg">
+          <Heading as="h2" size="xl">
             Your Account
           </Heading>
 
-          <Button onClick={signOut} colorScheme="yellow">
+          <Button onClick={signOut} colorScheme="blue">
             Logout
           </Button>
         </Flex>

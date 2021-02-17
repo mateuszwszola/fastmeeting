@@ -27,6 +27,7 @@ const SignIn = () => {
   const { signUp } = useAuth();
   const bgColor = useColorModeValue('white', 'gray.900');
   const textColor = useColorModeValue('gray.700', 'white');
+  const inputBgColor = useColorModeValue('gray.50', 'gray.800');
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -106,6 +107,7 @@ const SignIn = () => {
                   py={2}
                   px={4}
                   w="full"
+                  bgColor={inputBgColor}
                 />
               </FormControl>
 
@@ -122,6 +124,7 @@ const SignIn = () => {
                   py={2}
                   px={4}
                   w="full"
+                  bgColor={inputBgColor}
                 />
               </FormControl>
 
@@ -138,10 +141,12 @@ const SignIn = () => {
                   py={2}
                   px={4}
                   w="full"
+                  bgColor={inputBgColor}
                 />
               </FormControl>
 
               <Button
+                colorScheme="blue"
                 mt={4}
                 w="full"
                 type="submit"

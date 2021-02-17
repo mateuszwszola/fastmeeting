@@ -27,6 +27,7 @@ const SignIn = () => {
   const bgColor = useColorModeValue('white', 'gray.900');
   const textColor = useColorModeValue('gray.700', 'white');
   const secondaryTextColor = useColorModeValue('gray.600', 'gray.200');
+  const inputBgColor = useColorModeValue('gray.50', 'gray.800');
 
   const toggleSignInWithEmailType = () => {
     if (showPasswordInput) setPassword('');
@@ -169,6 +170,7 @@ const SignIn = () => {
                   py={2}
                   px={4}
                   w="full"
+                  bgColor={inputBgColor}
                 />
               </FormControl>
 
@@ -186,10 +188,17 @@ const SignIn = () => {
                     py={2}
                     px={4}
                     w="full"
+                    bgColor={inputBgColor}
                   />
                 </FormControl>
               )}
-              <Button mt={4} w="full" type="submit" isDisabled={!email.length}>
+              <Button
+                mt={4}
+                w="full"
+                type="submit"
+                isDisabled={!email.length}
+                colorScheme="blue"
+              >
                 Sign in
               </Button>
             </Box>

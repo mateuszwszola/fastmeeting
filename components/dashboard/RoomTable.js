@@ -18,6 +18,7 @@ import {
   VisuallyHidden,
 } from '@chakra-ui/react';
 import { useState } from 'react';
+import EmptyState from './EmptyState';
 
 export const MAX_PROFILE_ROOMS = 3;
 
@@ -35,12 +36,11 @@ const SkeletonRow = ({ width }) => (
   </Tr>
 );
 
-const RoomTable = ({ rooms, isLoadingRooms, onDelete }) => {
-  const tableHeaderColor = useColorModeValue('gray.50', 'gray.700');
+const RoomListItem = ({ room, onDelete }) => {
   const [isEditting, setIsEditting] = useState(false);
 
-  const roomListItems = rooms?.map((room) => (
-    <Tr key={room.id}>
+  return (
+    <Tr>
       <Td whiteSpace="nowrap">{room.name}</Td>
       <Td whiteSpace="nowrap">
         <NextLink href={`/${room.slug}`} passHref>
@@ -52,7 +52,7 @@ const RoomTable = ({ rooms, isLoadingRooms, onDelete }) => {
       <Td whiteSpace="nowrap" textAlign="right">
         {isEditting ? (
           <ButtonGroup size="sm" variant="outline" spacing="6">
-            <Button colorScheme="red" onClick={() => onDelete(room.id)}>
+            <Button colorScheme="red" onClick={onDelete}>
               Delete
             </Button>
             <CloseButton onClick={() => setIsEditting(false)} />
@@ -68,7 +68,16 @@ const RoomTable = ({ rooms, isLoadingRooms, onDelete }) => {
         )}
       </Td>
     </Tr>
-  ));
+  );
+};
+
+RoomListItem.propTypes = {
+  room: PropTypes.object.isRequired,
+  onDelete: PropTypes.func.isRequired,
+};
+
+const RoomTable = ({ rooms, isLoadingRooms, onDelete }) => {
+  const tableHeaderColor = useColorModeValue('gray.50', 'gray.700');
 
   const skeletonRows = (
     <>
@@ -78,10 +87,22 @@ const RoomTable = ({ rooms, isLoadingRooms, onDelete }) => {
     </>
   );
 
-  const content = isLoadingRooms ? skeletonRows : roomListItems;
+  const content = isLoadingRooms
+    ? skeletonRows
+    : rooms.map((room) => (
+        <RoomListItem
+          key={room.id}
+          room={room}
+          onDelete={() => onDelete(room.id)}
+        />
+      ));
+
+  if (!isLoadingRooms && !rooms.length) {
+    return <EmptyState />;
+  }
 
   return (
-    <Flex mt={[6, 12]} flexDir="column">
+    <Flex mt={[4, 6]} flexDir="column">
       <Box overflowX="auto" my={-2} mx={{ sm: -6, lg: -8 }}>
         <Box
           py={2}
@@ -91,7 +112,7 @@ const RoomTable = ({ rooms, isLoadingRooms, onDelete }) => {
           px={{ sm: 6, lg: 8 }}
         >
           <Box
-            boxShadow="base"
+            boxShadow="lg"
             overflow="hidden"
             borderBottom="1"
             borderColor="gray.200"

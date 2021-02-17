@@ -3,10 +3,10 @@ import { Box } from '@chakra-ui/react';
 export default function Logo({ ...props }) {
   return (
     <Box
-      {...props}
       as="svg"
       w={6}
       h={6}
+      {...props}
       fill="currentColor"
       viewBox="0 0 20 20"
       xmlns="http://www.w3.org/2000/svg"

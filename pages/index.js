@@ -29,7 +29,9 @@ export default function Home() {
           >
             <Heading
               as="h1"
-              size="xl"
+              size="2xl"
+              bgGradient="linear(to-l, yellow.400,blue.500)"
+              bgClip="text"
               maxW="lg"
               fontWeight="bold"
               lineHeight={1}

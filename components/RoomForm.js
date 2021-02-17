@@ -24,7 +24,7 @@ function RoomForm() {
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState(null);
   const boxBgColor = useColorModeValue('white', 'gray.900');
-  const inputBgColor = useColorModeValue('white', 'gray.800');
+  const inputBgColor = useColorModeValue('gray.50', 'gray.800');
   const { colorMode } = useColorMode();
 
   const onCreateToggle = useCallback(() => {
@@ -57,12 +57,8 @@ function RoomForm() {
       w="full"
       px={4}
       py={8}
-      mb={8}
       boxShadow="xl"
       borderRadius="lg"
-      bgGradient={
-        colorMode === 'light' ? 'linear(to-r, blue.100, yellow.100)' : null
-      }
       bgColor={boxBgColor}
     >
       <Heading
@@ -78,7 +74,7 @@ function RoomForm() {
           {error.message}
         </Text>
       )}
-      <Box as="form" onSubmit={onSubmit} mt={6} w="full" maxW="md" mx="auto">
+      <Box as="form" onSubmit={onSubmit} mt={6} w="full" maxW="sm" mx="auto">
         <FormControl id="name">
           <FormLabel>Display Name</FormLabel>
           <Input
@@ -121,7 +117,7 @@ function RoomForm() {
           variant={colorMode === 'light' ? 'solid' : 'outline'}
           type="submit"
           w="full"
-          colorScheme="yellow"
+          colorScheme="blue"
           h={12}
           px={6}
           mt={6}
@@ -138,6 +134,10 @@ function RoomForm() {
         mt={6}
         display="block"
         mx="auto"
+        _focus={{
+          outline: 'none',
+          color: 'blue.400',
+        }}
       >
         Or {isCreating ? 'join' : 'create'} room instead
       </Button>

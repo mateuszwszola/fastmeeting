@@ -35,6 +35,7 @@ const CreateRoom = ({ onAddRoom, currentRoomsNumber }) => {
     if (newRoomName) {
       onAddRoom(newRoomName);
       setIsCreatingRoom(false);
+      setNewRoomName('');
     }
   };
 
@@ -51,7 +52,7 @@ const CreateRoom = ({ onAddRoom, currentRoomsNumber }) => {
       {isCreatingRoom ? (
         <>
           <ButtonGroup variant="outline" spacing="4">
-            <Button onClick={handleAddRoom} colorScheme="yellow">
+            <Button onClick={handleAddRoom} colorScheme="blue">
               Add
             </Button>
             <Button onClick={onCancelButtonClick}>Cancel</Button>
@@ -60,7 +61,7 @@ const CreateRoom = ({ onAddRoom, currentRoomsNumber }) => {
       ) : (
         <Button
           isDisabled={currentRoomsNumber >= 3}
-          colorScheme="yellow"
+          colorScheme="blue"
           onClick={onAddRoomButtonClick}
         >
           Add room
