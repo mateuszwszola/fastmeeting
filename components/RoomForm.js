@@ -1,4 +1,5 @@
-import { useMeeting } from '@/lib/MeetingContext';
+import { useCallback, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import {
   Box,
   Button,
@@ -9,19 +10,26 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import { useCallback, useState } from 'react';
+import { useMeeting } from '@/lib/MeetingContext';
 
 function RoomForm() {
   const router = useRouter();
   const { identity, roomName, joinRoom, createRoom } = useMeeting();
   const [identityValue, setIdentityValue] = useState(identity);
   const [roomNameValue, setRoomNameValue] = useState(roomName);
-  const [isCreating, setIsCreating] = useState(false);
+  const [isCreating, setIsCreating] = useState(true);
   const [error, setError] = useState(null);
   const bgColor = useColorModeValue('white', 'gray.900');
   const textColor = useColorModeValue('gray.700', 'white');
   const inputBgColor = useColorModeValue('gray.50', 'gray.800');
+
+  useEffect(() => {
+    const { roomName: roomNameQueryParam } = router.query;
+    if (roomNameQueryParam) {
+      setRoomNameValue(roomNameQueryParam);
+      setIsCreating(false);
+    }
+  }, [router.query]);
 
   const onCreateToggle = useCallback(() => {
     setIsCreating((prev) => !prev);

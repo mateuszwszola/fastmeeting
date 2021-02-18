@@ -14,12 +14,16 @@ export default function Meeting() {
   const [participants, setParticipants] = useState([]);
 
   useEffect(() => {
+    if (!token) {
+      router.push(`/?roomName=${roomName}`);
+    }
+  }, [roomName, router, token]);
+
+  useEffect(() => {
     if (token) {
       connect(token);
-    } else {
-      router.push('/');
     }
-  }, [connect, router, token]);
+  }, [connect, token]);
 
   useEffect(() => {
     const tidyUp = (event) => {

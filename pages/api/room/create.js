@@ -2,7 +2,7 @@ import { nanoid } from 'nanoid';
 import { supabaseAdmin } from '@/lib/initSupabaseAdmin';
 import { twilioAdminClient } from '@/lib/initTwilioAdmin';
 import { generateVideoToken } from '@/lib/twilioAdmin';
-import { getWebhookStatusCallback, getURL } from '@/utils/helpers';
+import { getWebhookStatusCallback } from '@/utils/helpers';
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
