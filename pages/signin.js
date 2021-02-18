@@ -196,7 +196,8 @@ const SignIn = () => {
                 mt={4}
                 w="full"
                 type="submit"
-                isDisabled={!email.length}
+                isDisabled={loading || !email.length}
+                isLoading={loading}
                 colorScheme="blue"
               >
                 Sign in

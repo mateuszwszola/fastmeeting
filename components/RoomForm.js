@@ -1,5 +1,4 @@
 import { useMeeting } from '@/lib/MeetingContext';
-import { slugify } from '@/utils/helpers';
 import {
   Box,
   Button,
@@ -39,8 +38,7 @@ function RoomForm() {
         const { roomName } = await createRoom(identityValue);
         router.push(`/${roomName}`);
       } else {
-        const roomName = slugify(roomNameValue);
-        await joinRoom(identityValue, roomName);
+        const { roomName } = await joinRoom(identityValue, roomNameValue);
         router.push(`/${roomName}`);
       }
     } catch (error) {

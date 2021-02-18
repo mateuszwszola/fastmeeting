@@ -151,7 +151,7 @@ const SignIn = () => {
                 w="full"
                 type="submit"
                 isLoading={loading}
-                isDisabled={!email.length || !name.length}
+                isDisabled={!email.length || !name.length || loading}
               >
                 Sign up
               </Button>

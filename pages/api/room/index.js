@@ -1,20 +1,18 @@
-import { supabase } from '@/lib/initSupabase';
+import { retrieveInProgressRoom } from '@/lib/twilioAdmin';
 
 export default async function handler(req, res) {
   try {
-    const { id: roomId } = req.query;
+    const { roomName } = req.query;
 
-    const room = await supabase
-      .from('rooms')
-      .select('*')
-      .eq('id', roomId)
-      .single();
-
-    if (room) {
-      return res.status(200).json({ room });
-    } else {
-      return res.status(404).end();
+    if (!roomName) {
+      return res
+        .status(400)
+        .json({ message: 'room name and identity are required' });
     }
+
+    const room = await retrieveInProgressRoom(roomName);
+
+    return res.status(200).json({ room });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
