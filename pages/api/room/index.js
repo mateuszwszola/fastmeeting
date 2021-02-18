@@ -5,9 +5,7 @@ export default async function handler(req, res) {
     const { roomName } = req.query;
 
     if (!roomName) {
-      return res
-        .status(400)
-        .json({ message: 'room name and identity are required' });
+      return res.status(400).json({ message: 'room name is required' });
     }
 
     const room = await retrieveInProgressRoom(roomName);
