@@ -1,10 +1,10 @@
-import { useRouter } from 'next/router';
-import { useState, useEffect, useCallback } from 'react';
-import { useMeeting } from '@/lib/MeetingContext';
-import useVideoRoom from '@/hooks/useVideoRoom';
-import Layout from '@/components/Layout';
+import MeetingLayout from '@/components/MeetingLayout';
 import Participant from '@/components/Participant';
-import { Flex, Heading, Button } from '@chakra-ui/react';
+import useVideoRoom from '@/hooks/useVideoRoom';
+import { useMeeting } from '@/lib/MeetingContext';
+import { Box, SimpleGrid } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useState } from 'react';
 
 export default function Meeting() {
   const router = useRouter();
@@ -14,12 +14,16 @@ export default function Meeting() {
   const [participants, setParticipants] = useState([]);
 
   useEffect(() => {
+    if (!token) {
+      router.push(`/?roomName=${roomName}`);
+    }
+  }, [roomName, router, token]);
+
+  useEffect(() => {
     if (token) {
       connect(token);
-    } else {
-      router.push('/');
     }
-  }, [connect, router, token]);
+  }, [connect, token]);
 
   useEffect(() => {
     const tidyUp = (event) => {
@@ -67,22 +71,25 @@ export default function Meeting() {
   }, [leave, logout, room]);
 
   const remoteParticipants = participants.map((participant) => (
-    <Participant key={participant.sid} participant={participant} />
+    <Box
+      key={participant.sid}
+      w="full"
+      mx="auto"
+      borderRadius="md"
+      boxShadow="md"
+    >
+      <Participant participant={participant} />
+    </Box>
   ));
 
   return (
-    <Layout>
-      <Flex justify="space-between" align="center">
-        <Heading as="h2">Room: {roomName}</Heading>
-        <Button isLoading={isConnecting} onClick={handleLogout}>
-          Leave Room
-        </Button>
-      </Flex>
-
-      <div>{room && <Participant participant={room.localParticipant} />}</div>
-
-      <Heading as="h3">Remote participants</Heading>
-      <div>{remoteParticipants}</div>
-    </Layout>
+    <MeetingLayout isConnecting={isConnecting} handleLogout={handleLogout}>
+      <SimpleGrid columns={[1, null, 2]} spacing={4}>
+        <Box w="full" mx="auto" borderRadius="md" boxShadow="md">
+          {room && <Participant participant={room.localParticipant} />}
+        </Box>
+        {remoteParticipants}
+      </SimpleGrid>
+    </MeetingLayout>
   );
 }

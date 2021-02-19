@@ -2,7 +2,7 @@ async function fetcher(url, { body, token, ...customConfig } = {}) {
   const headers = {};
 
   if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
+    headers['token'] = token;
   }
 
   const config = {

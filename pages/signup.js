@@ -151,13 +151,13 @@ const SignIn = () => {
                 w="full"
                 type="submit"
                 isLoading={loading}
-                isDisabled={!email.length || !name.length}
+                isDisabled={!email.length || !name.length || loading}
               >
                 Sign up
               </Button>
             </Box>
 
-            <Flex className="mt-5 flex items-center justify-between">
+            <Flex mt={5} align="center" justify="space-between">
               <Text
                 as="span"
                 borderBottom="1px"

@@ -7,6 +7,7 @@ import {
   Input,
   Text,
   useColorModeValue,
+  VisuallyHidden,
 } from '@chakra-ui/react';
 import { slugify } from '@/utils/helpers';
 
@@ -19,15 +20,22 @@ const CreateRoomInput = ({ value, onChange }) => {
   }, []);
 
   return (
-    <Input
-      ref={inputRef}
-      mt={4}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      placeholder="Enter room name"
-      h={12}
-      bgColor={inputBgColor}
-    />
+    <>
+      <Text as="label" htmlFor="roomName">
+        <VisuallyHidden>Room name</VisuallyHidden>
+      </Text>
+
+      <Input
+        id="roomName"
+        ref={inputRef}
+        mt={4}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder="Enter room name"
+        h={12}
+        bgColor={inputBgColor}
+      />
+    </>
   );
 };
 
@@ -57,16 +65,14 @@ const CreateRoom = ({ onAddRoom, currentRoomsNumber }) => {
   };
 
   return (
-    <Flex flexDir="column" alignItems="flex-end">
+    <Flex flexDir="column" my={[4, 0]} alignItems={['flex-start', 'flex-end']}>
       {isCreatingRoom ? (
-        <>
-          <ButtonGroup variant="outline" spacing="4">
-            <Button onClick={handleAddRoom} colorScheme="blue">
-              Add
-            </Button>
-            <Button onClick={onCancelButtonClick}>Cancel</Button>
-          </ButtonGroup>
-        </>
+        <ButtonGroup variant="outline" spacing="4">
+          <Button onClick={handleAddRoom} colorScheme="blue">
+            Add
+          </Button>
+          <Button onClick={onCancelButtonClick}>Cancel</Button>
+        </ButtonGroup>
       ) : (
         <Button
           isDisabled={currentRoomsNumber >= 3}

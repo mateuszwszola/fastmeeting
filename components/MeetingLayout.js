@@ -1,68 +1,156 @@
-import Link from 'next/link';
+import { APP_NAME } from '@/components/Layout';
 import { useAuth } from '@/lib/AuthContext';
-import { addChannel } from '@/lib/db';
-import { slugify } from '@/utils/helpers';
+import { getURL } from '@/utils/helpers';
+import {
+  Box,
+  Button,
+  Flex,
+  HStack,
+  IconButton,
+  Text,
+  useClipboard,
+  useColorModeValue,
+} from '@chakra-ui/react';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
+import {
+  FaLink,
+  FaVideo,
+  FaVideoSlash,
+  FaHandPaper,
+  FaMicrophone,
+  FaMicrophoneSlash,
+} from 'react-icons/fa';
+import { BsPeopleFill, BsChatDotsFill } from 'react-icons/bs';
+import Logo from './icons/Logo';
+import Header from './layout/Header';
+import Nav from './layout/Nav';
+import NavLink from './layout/NavLink';
+import Controllers from './meetingLayout/Controllers';
+import { useState } from 'react';
 
-export default function MeetingLayout(props) {
-  const { signOut } = useAuth();
+const MeetingLayout = ({ isConnecting, handleLogout, children }) => {
+  const router = useRouter();
+  const { roomName } = router.query;
+  const meetingLink = `${getURL()}/${roomName}`;
+  const { hasCopied, onCopy } = useClipboard(meetingLink);
+  const bgColor = useColorModeValue('gray.50', 'black');
+  const { user } = useAuth();
+  const [isVideoOn, setIsVideoOn] = useState(true);
+  const [isMicOn, setIsMicOn] = useState(true);
 
-  const newChannel = async () => {
-    const slug = prompt('Please enter your name');
-    if (slug) {
-      addChannel(slugify(slug));
-    }
+  const toggleVideo = () => {
+    setIsVideoOn((on) => !on);
+  };
+
+  const toggleMic = () => {
+    setIsMicOn((on) => !on);
   };
 
   return (
-    <main className="main flex h-screen w-screen overflow-hidden">
-      {/* Messages */}
-      <div className="flex-1 bg-gray-800 h-screen">{props.children}</div>
-      {/* Sidebar */}
-      <nav
-        className="w-64 bg-gray-900 text-gray-100 overflow-scroll"
-        style={{ maxWidth: '20%', minWidth: 150, maxHeight: '100vh' }}
-      >
-        <div className="p-2 ">
-          <div className="p-2">
-            <button
-              className="bg-blue-900 hover:bg-blue-800 text-white py-2 px-4 rounded w-full transition duration-150"
-              onClick={() => newChannel()}
-            >
-              New Channel
-            </button>
-          </div>
-          <hr className="m-2" />
-          <div className="p-2">
-            <button
-              className="bg-blue-900 hover:bg-blue-800 text-white py-2 px-4 rounded w-full transition duration-150"
-              onClick={() => signOut()}
-            >
-              Log out
-            </button>
-          </div>
-          <hr className="m-2" />
-          <h4 className="font-bold">Channels</h4>
-          <ul className="channel-list">
-            {props.channels.map((x) => (
-              <SidebarItem
-                channel={x}
-                key={x.id}
-                isActiveChannel={x.id === props.activeChannelId}
-              />
-            ))}
-          </ul>
-        </div>
-      </nav>
-    </main>
-  );
-}
+    <>
+      <Head>
+        <title>Meeting | {APP_NAME}</title>
+      </Head>
 
-const SidebarItem = ({ channel, isActiveChannel }) => (
-  <>
-    <li>
-      <Link href={`/r/${channel.id}`}>
-        <a className={isActiveChannel ? 'font-bold' : ''}>{channel.slug}</a>
-      </Link>
-    </li>
-  </>
-);
+      <Flex
+        position="relative"
+        w="100%"
+        minH="100vh"
+        flexDir="column"
+        overflow="hidden"
+        bgColor={bgColor}
+      >
+        <Header>
+          <Nav>
+            <Flex align="center">
+              <NavLink
+                href="/"
+                leftIcon={<Logo w={8} h={8} color="blue.500" />}
+              >
+                <Text as="span" display={['none', 'inline']} fontWeight="bold">
+                  Fast Meeting
+                </Text>
+              </NavLink>
+              <Box ml={4}>
+                <Text fontWeight="medium">{roomName}</Text>
+              </Box>
+            </Flex>
+            <Flex>
+              <Button
+                size="sm"
+                onClick={onCopy}
+                aria-label="Copy meeting link"
+                leftIcon={<FaLink />}
+              >
+                {hasCopied ? 'Copied' : 'Copy link'}
+              </Button>
+            </Flex>
+          </Nav>
+        </Header>
+
+        {/* Main */}
+        <Box as="main" w="full" maxWidth="1280px" mx="auto" flex={1} p={4}>
+          {children}
+        </Box>
+
+        {/* Sidebar */}
+        <Box
+          display="none"
+          as="nav"
+          w={64}
+          bgColor="gray.900"
+          color="gray.100"
+          overflow="scroll"
+          maxW="20%"
+          minWidth="150px"
+          maxHeight="100vh"
+        ></Box>
+
+        {/* Bottom nav */}
+        <Box position="fixed" bottom="0" left="0" right="0">
+          <Controllers>
+            <Box>
+              <IconButton
+                onClick={toggleVideo}
+                icon={isVideoOn ? <FaVideo /> : <FaVideoSlash />}
+              />
+              <Text>Cam</Text>
+            </Box>
+            <Box>
+              <IconButton
+                onClick={toggleMic}
+                icon={isMicOn ? <FaMicrophone /> : <FaMicrophoneSlash />}
+              />
+              <Text>Mic</Text>
+            </Box>
+            <Box>
+              <IconButton icon={<BsChatDotsFill />} />
+              <Text>Chat</Text>
+            </Box>
+            <Box>
+              <IconButton icon={<BsPeopleFill />} />
+              <Text>People</Text>
+            </Box>
+            <Box>
+              <IconButton
+                isLoading={isConnecting}
+                onClick={handleLogout}
+                icon={<FaHandPaper />}
+              />
+              <Text>Leave</Text>
+            </Box>
+          </Controllers>
+        </Box>
+      </Flex>
+    </>
+  );
+};
+
+MeetingLayout.propTypes = {
+  isConnecting: PropTypes.bool.isRequired,
+  handleLogout: PropTypes.func.isRequired,
+};
+
+export default MeetingLayout;
