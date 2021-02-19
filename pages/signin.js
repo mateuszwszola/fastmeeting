@@ -218,7 +218,7 @@ const SignIn = () => {
               Sign in with {showPasswordInput ? 'magic link' : 'password'}
             </Button>
 
-            <Flex className="mt-5 flex items-center justify-between">
+            <Flex mt={5} align="center" justify="space-between">
               <Text
                 as="span"
                 borderBottom="1px"

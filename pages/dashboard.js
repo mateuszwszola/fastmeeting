@@ -86,7 +86,7 @@ export default function Dashboard() {
   return (
     <Layout>
       <Box w="full" maxW="960px" px={4} pt={16} mx="auto">
-        <Flex justify="space-between">
+        <Flex flexDir={['column', 'row']} justify="space-between">
           <Heading as="h2" size="xl">
             Your Rooms
           </Heading>
