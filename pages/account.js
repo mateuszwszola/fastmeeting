@@ -15,7 +15,7 @@ export default function Account() {
   }, [router, user]);
 
   return (
-    <Layout>
+    <Layout pageName="Account">
       <Box w="full" maxW="960px" px={4} pt={16} mx="auto">
         <Flex justify="space-between">
           <Heading as="h2" size="xl">

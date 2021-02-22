@@ -84,7 +84,7 @@ export default function Dashboard() {
   );
 
   return (
-    <Layout>
+    <Layout pageName="Dashboard">
       <Box w="full" maxW="960px" px={4} pt={16} mx="auto">
         <Flex flexDir={['column', 'row']} justify="space-between">
           <Heading as="h2" size="xl">

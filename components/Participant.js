@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 const trackpubsToTracks = (trackMap) =>
   Array.from(trackMap.values())
@@ -71,7 +71,7 @@ function Participant({ participant }) {
   return (
     <Box position="relative">
       <Box
-        ml={4}
+        ml={2}
         mb={2}
         position="absolute"
         bottom={0}
@@ -80,10 +80,10 @@ function Participant({ participant }) {
         opacity="0.8"
         p={1}
         borderRadius="md"
+        color="white"
+        fontWeight="medium"
       >
-        <Text as="span" color="white" fontWeight="medium">
-          {participant.identity}
-        </Text>
+        {participant.identity}
       </Box>
       {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
       <video ref={videoRef} autoPlay={true} />

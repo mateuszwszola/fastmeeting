@@ -1,19 +1,17 @@
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import Head from 'next/head';
+import PropTypes from 'prop-types';
 import { APP_NAME } from '@/components/Layout';
-import { useAuth } from '@/lib/AuthContext';
-import { getURL } from '@/utils/helpers';
 import {
   Box,
   Button,
   Flex,
-  HStack,
   IconButton,
   Text,
   useClipboard,
   useColorModeValue,
 } from '@chakra-ui/react';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
 import {
   FaLink,
   FaVideo,
@@ -28,17 +26,19 @@ import Header from './layout/Header';
 import Nav from './layout/Nav';
 import NavLink from './layout/NavLink';
 import Controllers from './meetingLayout/Controllers';
-import { useState } from 'react';
 
 const MeetingLayout = ({ isConnecting, handleLogout, children }) => {
   const router = useRouter();
   const { roomName } = router.query;
-  const meetingLink = `${getURL()}/${roomName}`;
-  const { hasCopied, onCopy } = useClipboard(meetingLink);
+  const [roomUrl, setRoomUrl] = useState('');
+  const { hasCopied, onCopy } = useClipboard(roomUrl);
   const bgColor = useColorModeValue('gray.50', 'black');
-  const { user } = useAuth();
   const [isVideoOn, setIsVideoOn] = useState(true);
   const [isMicOn, setIsMicOn] = useState(true);
+
+  useEffect(() => {
+    setRoomUrl(window.location.href);
+  }, []);
 
   const toggleVideo = () => {
     setIsVideoOn((on) => !on);

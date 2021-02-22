@@ -65,7 +65,7 @@ const SignIn = () => {
   }, [router, user]);
 
   return (
-    <Layout>
+    <Layout pageName="Sign Up">
       <Box pt={{ base: 16, lg: 32 }}>
         <Flex
           maxW="sm"
