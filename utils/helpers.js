@@ -21,3 +21,13 @@ export const slugify = (text) => {
     .replace(/^-+/, '') // Trim - from start of text
     .replace(/-+$/, ''); // Trim - from end of text
 };
+
+export const isMobile = (() => {
+  if (
+    typeof navigator === 'undefined' ||
+    typeof navigator.userAgent !== 'string'
+  ) {
+    return false;
+  }
+  return /Mobile/.test(navigator.userAgent);
+})();

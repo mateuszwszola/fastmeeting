@@ -4,8 +4,8 @@ import useVideoRoom from '@/components/videoProvider/useVideoRoom';
 
 export const VideoContext = createContext();
 
-function VideoProvider({ roomName, children }) {
-  const { room, connect, leave, isConnecting } = useVideoRoom(roomName);
+function VideoProvider({ options, children }) {
+  const { room, connect, leave, isConnecting } = useVideoRoom(options);
 
   return (
     <VideoContext.Provider value={{ room, connect, leave, isConnecting }}>
@@ -15,7 +15,7 @@ function VideoProvider({ roomName, children }) {
 }
 
 VideoProvider.propTypes = {
-  roomName: PropTypes.string.isRequired,
+  options: PropTypes.object,
 };
 
 export default VideoProvider;

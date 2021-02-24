@@ -25,23 +25,12 @@ function Meeting() {
   useEffect(() => {
     if (token) {
       connect(token);
-    }
-  }, [connect, token]);
 
-  useEffect(() => {
-    const tidyUp = (event) => {
-      if (!event.persisted) {
+      return () => {
         leave();
-      }
-      logout();
-    };
-    window.addEventListener('pagehide', tidyUp);
-    window.addEventListener('beforeunload', tidyUp);
-    return () => {
-      window.removeEventListener('pagehide', tidyUp);
-      window.removeEventListener('beforeunload', tidyUp);
-    };
-  }, [leave, logout, room]);
+      };
+    }
+  }, [connect, leave, token]);
 
   useEffect(() => {
     const participantConnected = (participant) => {
@@ -67,11 +56,9 @@ function Meeting() {
   }, [room]);
 
   const handleLogout = useCallback(() => {
-    if (room) {
-      leave();
-    }
+    leave();
     logout();
-  }, [leave, logout, room]);
+  }, [leave, logout]);
 
   const remoteParticipants = participants.map((participant) => (
     <Box
@@ -102,7 +89,7 @@ export default function MeetingContainer() {
   const { roomName } = router.query;
 
   return (
-    <VideoProvider roomName={roomName}>
+    <VideoProvider options={{ name: roomName }}>
       <Meeting />
     </VideoProvider>
   );

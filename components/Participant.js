@@ -69,7 +69,7 @@ function Participant({ participant }) {
   }, [audioTracks]);
 
   return (
-    <Box position="relative">
+    <Box position="relative" w="full" mx="auto">
       <IdentityText>{participant.identity}</IdentityText>
 
       {/* eslint-disable-next-line jsx-a11y/media-has-caption */}

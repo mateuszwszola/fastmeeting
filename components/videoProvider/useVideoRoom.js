@@ -1,28 +1,47 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useRef, useEffect } from 'react';
 import Video from 'twilio-video';
+import { isMobile } from '@/utils/helpers';
 
-function useVideoRoom(roomName) {
+function useVideoRoom(options) {
   const [room, setRoom] = useState(null);
   const [isConnecting, setIsConnecting] = useState(false);
+  const optionsRef = useRef(options);
 
-  const connect = useCallback(
-    (token) => {
-      setIsConnecting(true);
+  useEffect(() => {
+    // Make sure the connect function will always access the recent options object
+    optionsRef.current = options;
+  }, [options]);
 
-      Video.connect(token, {
-        name: roomName,
-      })
-        .then((room) => {
-          setIsConnecting(false);
-          setRoom(room);
-        })
-        .catch((err) => {
-          console.error(err);
-          setIsConnecting(false);
+  const connect = useCallback((token) => {
+    setIsConnecting(true);
+
+    return Video.connect(token, { ...optionsRef.current })
+      .then((newRoom) => {
+        setRoom(newRoom);
+        setIsConnecting(false);
+
+        const disconnect = () => newRoom.disconnect();
+
+        newRoom.once('disconnected', () => {
+          setTimeout(() => setRoom(null));
+          window.removeEventListener('beforeunload', disconnect);
+
+          if (isMobile) {
+            window.removeEventListener('pagehide', disconnect);
+          }
         });
-    },
-    [roomName]
-  );
+
+        window.addEventListener('beforeunload', disconnect);
+
+        if (isMobile) {
+          window.removeEventListener('pagehide', disconnect);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setIsConnecting(false);
+      });
+  }, []);
 
   const leave = useCallback(() => {
     setRoom((prevRoom) => {
