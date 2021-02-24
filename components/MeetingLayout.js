@@ -1,52 +1,29 @@
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import Head from 'next/head';
-import PropTypes from 'prop-types';
 import { APP_NAME } from '@/components/Layout';
 import {
   Box,
-  Button,
   Flex,
   IconButton,
   Text,
-  useClipboard,
   useColorModeValue,
 } from '@chakra-ui/react';
-import {
-  FaLink,
-  FaVideo,
-  FaVideoSlash,
-  FaHandPaper,
-  FaMicrophone,
-  FaMicrophoneSlash,
-} from 'react-icons/fa';
-import { BsPeopleFill, BsChatDotsFill } from 'react-icons/bs';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
+import { BsChatDotsFill } from 'react-icons/bs';
+import { FaHandPaper } from 'react-icons/fa';
 import Logo from './icons/Logo';
 import Header from './layout/Header';
 import Nav from './layout/Nav';
 import NavLink from './layout/NavLink';
 import Controllers from './meetingLayout/Controllers';
+import CopyLinkButton from './meetingLayout/CopyLinkButton';
+import ToggleAudioButton from './ToggleAudioButton';
+import ToggleVideoButton from './ToggleVideoButton';
 
 const MeetingLayout = ({ isConnecting, handleLogout, children }) => {
   const router = useRouter();
   const { roomName } = router.query;
-  const [roomUrl, setRoomUrl] = useState('');
-  const { hasCopied, onCopy } = useClipboard(roomUrl);
   const bgColor = useColorModeValue('gray.50', 'black');
-  const [isVideoOn, setIsVideoOn] = useState(true);
-  const [isMicOn, setIsMicOn] = useState(true);
-
-  useEffect(() => {
-    setRoomUrl(window.location.href);
-  }, []);
-
-  const toggleVideo = () => {
-    setIsVideoOn((on) => !on);
-  };
-
-  const toggleMic = () => {
-    setIsMicOn((on) => !on);
-  };
 
   return (
     <>
@@ -78,14 +55,7 @@ const MeetingLayout = ({ isConnecting, handleLogout, children }) => {
               </Box>
             </Flex>
             <Flex>
-              <Button
-                size="sm"
-                onClick={onCopy}
-                aria-label="Copy meeting link"
-                leftIcon={<FaLink />}
-              >
-                {hasCopied ? 'Copied' : 'Copy link'}
-              </Button>
+              <CopyLinkButton />
             </Flex>
           </Nav>
         </Header>
@@ -111,27 +81,14 @@ const MeetingLayout = ({ isConnecting, handleLogout, children }) => {
         {/* Bottom nav */}
         <Box position="fixed" bottom="0" left="0" right="0">
           <Controllers>
+            <ToggleVideoButton />
             <Box>
-              <IconButton
-                onClick={toggleVideo}
-                icon={isVideoOn ? <FaVideo /> : <FaVideoSlash />}
-              />
-              <Text>Cam</Text>
-            </Box>
-            <Box>
-              <IconButton
-                onClick={toggleMic}
-                icon={isMicOn ? <FaMicrophone /> : <FaMicrophoneSlash />}
-              />
+              <ToggleAudioButton />
               <Text>Mic</Text>
             </Box>
             <Box>
               <IconButton icon={<BsChatDotsFill />} />
               <Text>Chat</Text>
-            </Box>
-            <Box>
-              <IconButton icon={<BsPeopleFill />} />
-              <Text>People</Text>
             </Box>
             <Box>
               <IconButton

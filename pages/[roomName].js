@@ -1,17 +1,20 @@
+import { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { Box, SimpleGrid } from '@chakra-ui/react';
 import MeetingLayout from '@/components/MeetingLayout';
 import Participant from '@/components/Participant';
-import useVideoRoom from '@/hooks/useVideoRoom';
+import VideoProvider from '@/components/VideoProvider';
 import { useMeeting } from '@/lib/MeetingContext';
-import { Box, SimpleGrid } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useVideoContext } from '@/lib/VideoContext';
 
-export default function Meeting() {
+function Meeting() {
   const router = useRouter();
   const { roomName } = router.query;
   const { token, logout } = useMeeting();
-  const { room, connect, leave, isConnecting } = useVideoRoom(roomName);
+  const { room, connect, leave, isConnecting } = useVideoContext();
   const [participants, setParticipants] = useState([]);
+
+  console.log('room', room);
 
   useEffect(() => {
     if (!token) {
@@ -91,5 +94,16 @@ export default function Meeting() {
         {remoteParticipants}
       </SimpleGrid>
     </MeetingLayout>
+  );
+}
+
+export default function MeetingContainer() {
+  const router = useRouter();
+  const { roomName } = router.query;
+
+  return (
+    <VideoProvider roomName={roomName}>
+      <Meeting />
+    </VideoProvider>
   );
 }
