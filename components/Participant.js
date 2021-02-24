@@ -2,11 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Box } from '@chakra-ui/react';
 import IdentityText from './participant/IdentityText';
-
-const trackpubsToTracks = (trackMap) =>
-  Array.from(trackMap.values())
-    .map((publication) => publication.track)
-    .filter((track) => track !== null);
+import { trackpubsToTracks } from '@/utils/helpers';
 
 function Participant({ participant }) {
   const [videoTracks, setVideoTracks] = useState([]);

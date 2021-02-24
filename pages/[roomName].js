@@ -11,10 +11,14 @@ function Meeting() {
   const router = useRouter();
   const { roomName } = router.query;
   const { token, logout } = useMeeting();
-  const { room, connect, leave, isConnecting } = useVideoContext();
+  const {
+    room,
+    connect,
+    leave,
+    isConnecting,
+    getAudioAndVideoTracks,
+  } = useVideoContext();
   const [participants, setParticipants] = useState([]);
-
-  console.log('room', room);
 
   useEffect(() => {
     if (!token) {
@@ -24,13 +28,13 @@ function Meeting() {
 
   useEffect(() => {
     if (token) {
-      connect(token);
+      getAudioAndVideoTracks().then((tracks) => connect(token, tracks));
 
       return () => {
         leave();
       };
     }
-  }, [connect, leave, token]);
+  }, [connect, getAudioAndVideoTracks, leave, token]);
 
   useEffect(() => {
     const participantConnected = (participant) => {

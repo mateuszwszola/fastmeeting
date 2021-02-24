@@ -12,10 +12,13 @@ function useVideoRoom(options) {
     optionsRef.current = options;
   }, [options]);
 
-  const connect = useCallback((token) => {
+  const connect = useCallback((token, localTracks) => {
     setIsConnecting(true);
 
-    return Video.connect(token, { ...optionsRef.current })
+    return Video.connect(token, {
+      ...optionsRef.current,
+      tracks: localTracks,
+    })
       .then((newRoom) => {
         setRoom(newRoom);
         setIsConnecting(false);

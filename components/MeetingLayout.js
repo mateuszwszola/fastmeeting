@@ -16,6 +16,8 @@ import Nav from './layout/Nav';
 import NavLink from './layout/NavLink';
 import Controllers from './meetingLayout/Controllers';
 import CopyLinkButton from './meetingLayout/CopyLinkButton';
+import ToggleAudioButton from './ToggleAudioButton';
+import ToggleVideoButton from './ToggleVideoButton';
 
 const MeetingLayout = ({ isConnecting, handleLogout, children }) => {
   const router = useRouter();
@@ -78,13 +80,11 @@ const MeetingLayout = ({ isConnecting, handleLogout, children }) => {
         {/* Bottom nav */}
         <Box position="fixed" bottom="0" left="0" right="0">
           <Controllers>
-            {/* <ToggleVideoButton />
-            <Text>Mic</Text>
-            <Box>
-              <ToggleAudioButton />
-              <Text>Mic</Text>
-            </Box>
-            <Box>
+            <ToggleVideoButton />
+
+            <ToggleAudioButton />
+
+            {/* <Box>
               <IconButton icon={<BsChatDotsFill />} />
               <Text>Chat</Text>
             </Box> */}

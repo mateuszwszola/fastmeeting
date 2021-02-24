@@ -31,3 +31,8 @@ export const isMobile = (() => {
   }
   return /Mobile/.test(navigator.userAgent);
 })();
+
+export const trackpubsToTracks = (trackMap) =>
+  Array.from(trackMap.values())
+    .map((publication) => publication.track)
+    .filter((track) => track !== null);
