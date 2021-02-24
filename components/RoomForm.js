@@ -14,7 +14,7 @@ import { useMeeting } from '@/lib/MeetingContext';
 
 function RoomForm() {
   const router = useRouter();
-  const { identity, roomName, joinRoom, createRoom } = useMeeting();
+  const { identity, roomName, joinRoom, createRoom, isFetching } = useMeeting();
   const [identityValue, setIdentityValue] = useState(identity);
   const [roomNameValue, setRoomNameValue] = useState(roomName);
   const [isCreating, setIsCreating] = useState(true);
@@ -117,6 +117,7 @@ function RoomForm() {
         )}
 
         <Button
+          isLoading={isFetching}
           type="submit"
           w="full"
           colorScheme="blue"

@@ -1,16 +1,23 @@
+import { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { Box, SimpleGrid } from '@chakra-ui/react';
 import MeetingLayout from '@/components/MeetingLayout';
 import Participant from '@/components/Participant';
-import useVideoRoom from '@/hooks/useVideoRoom';
+import VideoProvider from '@/components/VideoProvider';
 import { useMeeting } from '@/lib/MeetingContext';
-import { Box, SimpleGrid } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useVideoContext } from '@/lib/VideoContext';
 
-export default function Meeting() {
+function Meeting() {
   const router = useRouter();
   const { roomName } = router.query;
   const { token, logout } = useMeeting();
-  const { room, connect, leave, isConnecting } = useVideoRoom(roomName);
+  const {
+    room,
+    connect,
+    leave,
+    isConnecting,
+    getAudioAndVideoTracks,
+  } = useVideoContext();
   const [participants, setParticipants] = useState([]);
 
   useEffect(() => {
@@ -21,24 +28,13 @@ export default function Meeting() {
 
   useEffect(() => {
     if (token) {
-      connect(token);
-    }
-  }, [connect, token]);
+      getAudioAndVideoTracks().then((tracks) => connect(token, tracks));
 
-  useEffect(() => {
-    const tidyUp = (event) => {
-      if (!event.persisted) {
+      return () => {
         leave();
-      }
-      logout();
-    };
-    window.addEventListener('pagehide', tidyUp);
-    window.addEventListener('beforeunload', tidyUp);
-    return () => {
-      window.removeEventListener('pagehide', tidyUp);
-      window.removeEventListener('beforeunload', tidyUp);
-    };
-  }, [leave, logout, room]);
+      };
+    }
+  }, [connect, getAudioAndVideoTracks, leave, token]);
 
   useEffect(() => {
     const participantConnected = (participant) => {
@@ -64,11 +60,9 @@ export default function Meeting() {
   }, [room]);
 
   const handleLogout = useCallback(() => {
-    if (room) {
-      leave();
-    }
+    leave();
     logout();
-  }, [leave, logout, room]);
+  }, [leave, logout]);
 
   const remoteParticipants = participants.map((participant) => (
     <Box
@@ -91,5 +85,16 @@ export default function Meeting() {
         {remoteParticipants}
       </SimpleGrid>
     </MeetingLayout>
+  );
+}
+
+export default function MeetingContainer() {
+  const router = useRouter();
+  const { roomName } = router.query;
+
+  return (
+    <VideoProvider options={{ name: roomName }}>
+      <Meeting />
+    </VideoProvider>
   );
 }

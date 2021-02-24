@@ -1,16 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Box } from '@chakra-ui/react';
-
-const trackpubsToTracks = (trackMap) =>
-  Array.from(trackMap.values())
-    .map((publication) => publication.track)
-    .filter((track) => track !== null);
+import IdentityText from './participant/IdentityText';
+import { trackpubsToTracks } from '@/utils/helpers';
 
 function Participant({ participant }) {
   const [videoTracks, setVideoTracks] = useState([]);
   const [audioTracks, setAudioTracks] = useState([]);
-
   const videoRef = useRef();
   const audioRef = useRef();
 
@@ -69,22 +65,9 @@ function Participant({ participant }) {
   }, [audioTracks]);
 
   return (
-    <Box position="relative">
-      <Box
-        ml={2}
-        mb={2}
-        position="absolute"
-        bottom={0}
-        left={0}
-        bgColor="black"
-        opacity="0.8"
-        p={1}
-        borderRadius="md"
-        color="white"
-        fontWeight="medium"
-      >
-        {participant.identity}
-      </Box>
+    <Box position="relative" w="full" mx="auto">
+      <IdentityText>{participant.identity}</IdentityText>
+
       {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
       <video ref={videoRef} autoPlay={true} />
       <audio ref={audioRef} autoPlay={true} muted={true} />
