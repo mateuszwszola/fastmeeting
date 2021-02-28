@@ -1,8 +1,8 @@
+import { Flex, Box, Heading, Text } from '@chakra-ui/react';
 import Layout from '@/components/Layout';
 import RoomForm from '@/components/RoomForm';
-import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 
-export default function Home() {
+function Home() {
   return (
     <Layout>
       <Flex
@@ -53,3 +53,5 @@ export default function Home() {
     </Layout>
   );
 }
+
+export default Home;

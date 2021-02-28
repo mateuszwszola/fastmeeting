@@ -2,7 +2,7 @@ import { useCallback, useState, useRef, useEffect } from 'react';
 import Video from 'twilio-video';
 import { isMobile } from '@/utils/helpers';
 
-function useVideoRoom(options) {
+function useVideoRoom(options = {}) {
   const [room, setRoom] = useState(null);
   const [isConnecting, setIsConnecting] = useState(false);
   const optionsRef = useRef(options);
