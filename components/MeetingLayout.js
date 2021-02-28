@@ -1,25 +1,18 @@
-import { APP_NAME } from '@/components/Layout';
-import {
-  Box,
-  Flex,
-  IconButton,
-  Text,
-  useColorModeValue,
-} from '@chakra-ui/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
-import { FaHandPaper } from 'react-icons/fa';
+import { Box, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { APP_NAME } from '@/components/Layout';
 import Logo from './icons/Logo';
 import Header from './layout/Header';
 import Nav from './layout/Nav';
 import NavLink from './layout/NavLink';
+import LeaveRoomButton from './LeaveRoomButton';
 import Controllers from './meetingLayout/Controllers';
 import CopyLinkButton from './meetingLayout/CopyLinkButton';
 import ToggleAudioButton from './ToggleAudioButton';
 import ToggleVideoButton from './ToggleVideoButton';
 
-const MeetingLayout = ({ isConnecting, handleLogout, children }) => {
+const MeetingLayout = ({ children }) => {
   const router = useRouter();
   const { roomName } = router.query;
   const bgColor = useColorModeValue('gray.50', 'black');
@@ -84,28 +77,14 @@ const MeetingLayout = ({ isConnecting, handleLogout, children }) => {
 
             <ToggleAudioButton />
 
-            {/* <Box>
-              <IconButton icon={<BsChatDotsFill />} />
-              <Text>Chat</Text>
-            </Box> */}
-            <Box>
-              <IconButton
-                isLoading={isConnecting}
-                onClick={handleLogout}
-                icon={<FaHandPaper />}
-              />
-              <Text>Leave</Text>
-            </Box>
+            <LeaveRoomButton />
+
+            {/* {isUserRoomOwner && <EndMeetingButton />} */}
           </Controllers>
         </Box>
       </Flex>
     </>
   );
-};
-
-MeetingLayout.propTypes = {
-  isConnecting: PropTypes.bool.isRequired,
-  handleLogout: PropTypes.func.isRequired,
 };
 
 export default MeetingLayout;

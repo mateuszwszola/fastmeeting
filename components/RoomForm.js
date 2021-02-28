@@ -19,6 +19,7 @@ function RoomForm() {
   const [roomNameValue, setRoomNameValue] = useState(roomName);
   const [isCreating, setIsCreating] = useState(true);
   const [error, setError] = useState(null);
+
   const bgColor = useColorModeValue('white', 'gray.900');
   const textColor = useColorModeValue('gray.700', 'white');
   const inputBgColor = useColorModeValue('gray.50', 'gray.800');
