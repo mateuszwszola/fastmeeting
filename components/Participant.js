@@ -4,7 +4,7 @@ import { Box } from '@chakra-ui/react';
 import IdentityText from './participant/IdentityText';
 import { trackpubsToTracks } from '@/utils/helpers';
 
-function Participant({ participant }) {
+function Participant({ participant, local }) {
   const [videoTracks, setVideoTracks] = useState([]);
   const [audioTracks, setAudioTracks] = useState([]);
   const videoRef = useRef();
@@ -70,13 +70,18 @@ function Participant({ participant }) {
 
       {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
       <video ref={videoRef} autoPlay={true} />
-      <audio ref={audioRef} autoPlay={true} muted={true} />
+      <audio ref={audioRef} autoPlay={true} muted={local} />
     </Box>
   );
 }
 
+Participant.defaultProps = {
+  local: false,
+};
+
 Participant.propTypes = {
   participant: PropTypes.object.isRequired,
+  local: PropTypes.bool.isRequired,
 };
 
 export default Participant;

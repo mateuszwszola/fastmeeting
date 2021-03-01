@@ -7,7 +7,7 @@ Easily create online meetings with video and text chat.
 - [x] Voice & Video
 - [ ] Live chat
 - [x] No login required to create and join a meeting
-- [ ] Sign up to save a meeting
+- [x] Sign up to save a meeting
 
 ## Tech Stack
 

@@ -15,14 +15,16 @@ const Room = () => {
       borderRadius="md"
       boxShadow="md"
     >
-      <Participant participant={participant} />
+      <Participant local={false} participant={participant} />
     </Box>
   ));
 
   return (
     <SimpleGrid columns={[1, null, 2]} spacing={4}>
       <Box w="full" mx="auto" borderRadius="md" boxShadow="md">
-        {room && <Participant participant={room.localParticipant} />}
+        {room && (
+          <Participant local={true} participant={room.localParticipant} />
+        )}
       </Box>
       {remoteParticipants}
     </SimpleGrid>
