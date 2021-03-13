@@ -13,11 +13,11 @@ export default function useHandleRoomDisconnection(
           onError(error);
         }
 
-        // removeLocalAudioTrack();
-        // removeLocalVideoTrack();
-        room.localParticipant.tracks.forEach((trackPub) => {
-          trackPub.track.stop();
-        });
+        removeLocalAudioTrack();
+        removeLocalVideoTrack();
+        // room.localParticipant.tracks.forEach((trackPub) => {
+        //   trackPub.track.stop();
+        // });
       };
 
       room.on('disconnected', onDisconnected);
