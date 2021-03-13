@@ -1,43 +1,68 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { useMeeting } from '@/lib/MeetingContext';
+import { Box } from '@chakra-ui/layout';
+import { useMeetingContext } from '@/lib/MeetingContext';
 import { useVideoContext } from '@/lib/VideoContext';
+import useRoomState from '@/hooks/useRoomState';
 import MeetingLayout from '@/components/MeetingLayout';
 import VideoProvider from '@/components/VideoProvider';
 import Room from '@/components/Room';
+import DisplayError from '@/components/DisplayError';
+import { Button } from '@chakra-ui/button';
 
 function Meeting() {
   const router = useRouter();
   const { roomName } = router.query;
-  const { token } = useMeeting();
-  const { connect, leave, getAudioAndVideoTracks } = useVideoContext();
+  const { token } = useMeetingContext();
+  const {
+    connect,
+    getAudioAndVideoTracks,
+    isAcquiringLocalTracks,
+  } = useVideoContext();
+  const roomState = useRoomState();
+
+  // Redirect if room does not exists
+  // useEffect(() => {
+  //   if (!token) {
+  //     router.push(`/?roomName=${roomName}`);
+  //   }
+  // }, [roomName, router, token]);
 
   useEffect(() => {
-    if (!token) {
-      router.push(`/?roomName=${roomName}`);
-    }
-  }, [roomName, router, token]);
+    getAudioAndVideoTracks();
+  }, [getAudioAndVideoTracks]);
 
-  useEffect(() => {
+  const joinRoom = () => {
     if (token) {
-      getAudioAndVideoTracks().then((tracks) => connect(token, tracks));
-
-      return () => {
-        leave();
-      };
+      connect(token);
     }
-  }, [connect, getAudioAndVideoTracks, leave, token]);
+  };
 
   return (
-    <MeetingLayout>
-      <Room />
-    </MeetingLayout>
+    <>
+      {roomState === 'disconnected' ? (
+        <>
+          {/* TODO: Add lobby */}
+          <Box>Lobby</Box>
+          <Button onClick={joinRoom} disabled={isAcquiringLocalTracks}>
+            Join room
+          </Button>
+        </>
+      ) : (
+        <MeetingLayout roomName={roomName}>
+          <Room />
+        </MeetingLayout>
+      )}
+    </>
   );
 }
 
-export default function MeetingContainer() {
+export default function MeetingPage() {
+  const { error, setError } = useMeetingContext();
+
   return (
-    <VideoProvider>
+    <VideoProvider onError={setError}>
+      <DisplayError error={error} onClose={() => setError(null)} />
       <Meeting />
     </VideoProvider>
   );

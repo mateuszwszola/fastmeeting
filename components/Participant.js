@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 import { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Box } from '@chakra-ui/react';
@@ -68,7 +69,6 @@ function Participant({ participant, local }) {
     <Box position="relative" w="full" mx="auto">
       <IdentityText>{participant.identity}</IdentityText>
 
-      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
       <video ref={videoRef} autoPlay={true} />
       <audio ref={audioRef} autoPlay={true} muted={local} />
     </Box>

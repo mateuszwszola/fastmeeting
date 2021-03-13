@@ -10,11 +10,17 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { useMeeting } from '@/lib/MeetingContext';
+import { useMeetingContext } from '@/lib/MeetingContext';
 
 function RoomForm() {
   const router = useRouter();
-  const { identity, roomName, joinRoom, createRoom, isFetching } = useMeeting();
+  const {
+    identity,
+    roomName,
+    joinRoom,
+    createRoom,
+    isFetching,
+  } = useMeetingContext();
   const [identityValue, setIdentityValue] = useState(identity);
   const [roomNameValue, setRoomNameValue] = useState(roomName);
   const [isCreating, setIsCreating] = useState(true);

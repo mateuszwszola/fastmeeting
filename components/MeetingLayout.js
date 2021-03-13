@@ -1,20 +1,14 @@
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { Box, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import PropTypes from 'prop-types';
 import { APP_NAME } from '@/components/Layout';
+import { Box, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import Head from 'next/head';
 import Logo from './icons/Logo';
 import Header from './layout/Header';
 import Nav from './layout/Nav';
 import NavLink from './layout/NavLink';
-import LeaveRoomButton from './LeaveRoomButton';
-import Controllers from './meetingLayout/Controllers';
 import CopyLinkButton from './meetingLayout/CopyLinkButton';
-import ToggleAudioButton from './ToggleAudioButton';
-import ToggleVideoButton from './ToggleVideoButton';
 
-const MeetingLayout = ({ children }) => {
-  const router = useRouter();
-  const { roomName } = router.query;
+export default function MeetingLayout({ roomName, children }) {
   const bgColor = useColorModeValue('gray.50', 'black');
 
   return (
@@ -43,7 +37,7 @@ const MeetingLayout = ({ children }) => {
                 </Text>
               </NavLink>
               <Box ml={4}>
-                <Text fontWeight="medium">{roomName}</Text>
+                <Text fontWeight="medium">Room name: {roomName}</Text>
               </Box>
             </Flex>
             <Flex>
@@ -69,22 +63,11 @@ const MeetingLayout = ({ children }) => {
           minWidth="150px"
           maxHeight="100vh"
         ></Box>
-
-        {/* Bottom nav */}
-        <Box position="fixed" bottom="0" left="0" right="0">
-          <Controllers>
-            <ToggleVideoButton />
-
-            <ToggleAudioButton />
-
-            <LeaveRoomButton />
-
-            {/* {isUserRoomOwner && <EndMeetingButton />} */}
-          </Controllers>
-        </Box>
       </Flex>
     </>
   );
-};
+}
 
-export default MeetingLayout;
+MeetingLayout.propTypes = {
+  roomName: PropTypes.string.isRequired,
+};

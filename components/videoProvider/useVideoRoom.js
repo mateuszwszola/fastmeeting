@@ -26,6 +26,7 @@ function useVideoRoom(options = {}) {
         const disconnect = () => newRoom.disconnect();
 
         newRoom.once('disconnected', () => {
+          console.log('Once disconnected');
           setTimeout(() => setRoom(null));
           window.removeEventListener('beforeunload', disconnect);
 
@@ -46,19 +47,7 @@ function useVideoRoom(options = {}) {
       });
   }, []);
 
-  const leave = useCallback(() => {
-    setRoom((prevRoom) => {
-      if (prevRoom) {
-        prevRoom.localParticipant.tracks.forEach((trackPub) => {
-          trackPub.track.stop();
-        });
-        prevRoom.disconnect();
-      }
-      return null;
-    });
-  }, []);
-
-  return { room, connect, leave, isConnecting };
+  return { room, connect, isConnecting };
 }
 
 export default useVideoRoom;
