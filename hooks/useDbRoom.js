@@ -17,7 +17,7 @@ export default function useDbRoom(roomSlug) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [isLoading, roomSlug]);
+  }, [roomSlug]);
 
   return {
     room,

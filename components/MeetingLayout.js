@@ -69,5 +69,5 @@ export default function MeetingLayout({ roomName, children }) {
 }
 
 MeetingLayout.propTypes = {
-  roomName: PropTypes.string.isRequired,
+  roomName: PropTypes.string,
 };

@@ -16,7 +16,7 @@ export default function DisplayError({ error, onClose }) {
     <Alert status="error">
       <AlertIcon />
       <AlertTitle mr={2}>Error happened!</AlertTitle>
-      <AlertDescription>{error}</AlertDescription>
+      {/* <AlertDescription>{error}</AlertDescription> */}
       <CloseButton
         onClick={onClose}
         position="absolute"

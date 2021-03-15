@@ -9,12 +9,20 @@ import useDbRoom from '@/hooks/useDbRoom';
 import useRoomState from '@/hooks/useRoomState';
 import { useMeetingContext } from '@/lib/MeetingContext';
 import { Spinner } from '@chakra-ui/spinner';
+import { useEffect } from 'react';
 
 function Meeting() {
   const router = useRouter();
   const { roomName } = router.query;
   const { room: dbRoom, isLoading, error } = useDbRoom(roomName);
   const roomState = useRoomState();
+  const { token } = useMeetingContext();
+
+  useEffect(() => {
+    if (!token) {
+      router.replace(`/?roomName=${roomName}`);
+    }
+  }, [roomName, router, token]);
 
   return (
     <MeetingLayout roomName={roomName}>

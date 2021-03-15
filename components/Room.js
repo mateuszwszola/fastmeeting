@@ -16,8 +16,6 @@ export default function Room() {
   const { user } = useAuth();
   const participants = useParticipants(room);
 
-  console.log({ room, dbRoom, user });
-
   const isUserRoomOwner = dbRoom && user && dbRoom.owner_id === user.id;
 
   const remoteParticipants = participants.map((participant) => (

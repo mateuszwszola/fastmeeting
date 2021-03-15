@@ -8,12 +8,13 @@ export const VideoContext = createContext();
 
 function VideoProvider({ options, children, onError = () => {} }) {
   const {
+    localTracks,
     isAcquiringLocalTracks,
     removeLocalAudioTrack,
     removeLocalVideoTrack,
     getAudioAndVideoTracks,
   } = useLocalTracks();
-  const { room, connect, isConnecting } = useVideoRoom(options);
+  const { room, connect, isConnecting } = useVideoRoom(localTracks, options);
 
   useHandleRoomDisconnection(
     room,

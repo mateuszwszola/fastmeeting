@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useMeetingContext } from '@/lib/MeetingContext';
 import { useVideoContext } from '@/lib/VideoContext';
 import { Button } from '@chakra-ui/button';
-import { Box } from '@chakra-ui/layout';
+import { Flex } from '@chakra-ui/layout';
 
 export default function Lobby() {
   const { token } = useMeetingContext();
@@ -17,17 +17,14 @@ export default function Lobby() {
   }, [getAudioAndVideoTracks]);
 
   const joinRoom = () => {
-    if (token) {
-      connect(token);
-    }
+    connect(token);
   };
 
   return (
-    <>
-      <Box>Lobby</Box>
+    <Flex justify="center" align="center">
       <Button onClick={joinRoom} disabled={isAcquiringLocalTracks}>
         Join room
       </Button>
-    </>
+    </Flex>
   );
 }
