@@ -35,6 +35,8 @@ export default function useLocalTracks() {
         if (audioTrack) {
           setAudioTrack(audioTrack);
         }
+
+        return [audioTrack, videoTrack].filter((track) => track !== undefined);
       })
       .finally(() => setIsAcquiringLocalTracks(false));
   }, []);

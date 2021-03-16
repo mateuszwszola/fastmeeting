@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import {
   Box,
@@ -11,32 +11,19 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useMeetingContext } from '@/lib/MeetingContext';
+import { fetchRoom } from '@/lib/db';
 
 function RoomForm() {
   const router = useRouter();
-  const {
-    identity,
-    roomName,
-    joinRoom,
-    createRoom,
-    isFetching,
-  } = useMeetingContext();
-  const [identityValue, setIdentityValue] = useState(identity);
-  const [roomNameValue, setRoomNameValue] = useState(roomName);
+  const { identity, roomName, createRoom, isFetching } = useMeetingContext();
+  const [identityValue, setIdentityValue] = useState(identity || '');
+  const [roomNameValue, setRoomNameValue] = useState(roomName || '');
   const [isCreating, setIsCreating] = useState(true);
   const [error, setError] = useState(null);
 
   const bgColor = useColorModeValue('white', 'gray.900');
   const textColor = useColorModeValue('gray.700', 'white');
   const inputBgColor = useColorModeValue('gray.50', 'gray.800');
-
-  useEffect(() => {
-    const { roomName: roomNameQueryParam } = router.query;
-    if (roomNameQueryParam) {
-      setRoomNameValue(roomNameQueryParam);
-      setIsCreating(false);
-    }
-  }, [router.query]);
 
   const onCreateToggle = useCallback(() => {
     setIsCreating((prev) => !prev);
@@ -53,8 +40,12 @@ function RoomForm() {
         const { roomName } = await createRoom(identityValue);
         router.push(`/${roomName}`);
       } else {
-        const { roomName } = await joinRoom(identityValue, roomNameValue);
-        router.push(`/${roomName}`);
+        // Make sure room exists before joining it
+        const room = await fetchRoom(roomNameValue);
+        if (!room) {
+          throw new Error('Room does not exists');
+        }
+        router.push(`/${roomNameValue}`);
       }
     } catch (error) {
       setError(error);

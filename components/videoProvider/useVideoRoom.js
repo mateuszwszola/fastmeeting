@@ -22,6 +22,7 @@ function useVideoRoom(localTracks, options = {}) {
       }).then(
         (newRoom) => {
           setRoom(newRoom);
+          window.room = newRoom;
           setIsConnecting(false);
 
           const disconnect = () => newRoom.disconnect();

@@ -1,19 +1,12 @@
-import { generateSlug } from 'random-word-slugs';
+import { nanoid } from 'nanoid';
 import { supabaseAdmin } from '@/lib/initSupabaseAdmin';
 import { twilioAdminClient } from '@/lib/initTwilioAdmin';
-import { generateVideoToken } from '@/lib/twilioAdmin';
 import { getWebhookStatusCallback } from '@/utils/helpers';
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
-      const { identity } = req.body;
-
-      if (!identity) {
-        return res.status(400).json({ message: 'identity is required' });
-      }
-
-      const randomRoomSlug = generateSlug();
+      const randomRoomSlug = nanoid();
 
       // Create room record in a database
       const { error } = await supabaseAdmin
@@ -28,9 +21,7 @@ export default async function handler(req, res) {
         statusCallback: getWebhookStatusCallback(),
       });
 
-      const token = generateVideoToken(identity, uniqueName);
-
-      return res.status(200).json({ token, roomName: uniqueName });
+      return res.status(200).json({ roomName: uniqueName });
     } catch (error) {
       console.log(error);
       res

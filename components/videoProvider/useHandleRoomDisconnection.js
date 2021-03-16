@@ -15,6 +15,7 @@ export default function useHandleRoomDisconnection(
 
         removeLocalAudioTrack();
         removeLocalVideoTrack();
+
         // room.localParticipant.tracks.forEach((trackPub) => {
         //   trackPub.track.stop();
         // });

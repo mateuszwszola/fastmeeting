@@ -4,7 +4,7 @@ import useRoomState from '@/hooks/useRoomState';
 import { useVideoContext } from '@/lib/VideoContext';
 
 export default function LeaveRoomButton() {
-  const { room } = useVideoContext();
+  const { room, isConnecting } = useVideoContext();
   const roomState = useRoomState();
 
   const handleLeave = () => {
@@ -14,7 +14,7 @@ export default function LeaveRoomButton() {
   return (
     <Box>
       <IconButton
-        isDisabled={roomState === 'reconnecting'}
+        isDisabled={roomState === 'reconnecting' || isConnecting}
         onClick={handleLeave}
         icon={<FaHandPaper />}
       />
