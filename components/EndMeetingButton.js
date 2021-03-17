@@ -32,19 +32,15 @@ export default function EndMeetingButton() {
     return fetcher('/api/room/complete', {
       body: { roomName },
       token: session?.access_token,
-    })
-      .catch((err) => {
-        toast({
-          title: 'An error occurred.',
-          description: err.message,
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-        });
-      })
-      .finally(() => {
-        setIsLoading(false);
+    }).catch((err) => {
+      toast({
+        title: 'An error occurred.',
+        description: err.message,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
       });
+    });
   }
 
   return (

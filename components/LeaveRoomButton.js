@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { Box, IconButton, Text } from '@chakra-ui/react';
 import { FaHandPaper } from 'react-icons/fa';
 import useRoomState from '@/hooks/useRoomState';
@@ -7,9 +8,9 @@ export default function LeaveRoomButton() {
   const { room, isConnecting } = useVideoContext();
   const roomState = useRoomState();
 
-  const handleLeave = () => {
+  const handleLeave = useCallback(() => {
     room.disconnect();
-  };
+  }, [room]);
 
   return (
     <Box>

@@ -33,6 +33,7 @@ function VideoProvider({ options, children, onError = () => {} }) {
         removeLocalAudioTrack,
         removeLocalVideoTrack,
         getAudioAndVideoTracks,
+        localTracks,
       }}
     >
       {children}

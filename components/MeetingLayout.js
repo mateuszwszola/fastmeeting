@@ -47,9 +47,9 @@ export default function MeetingLayout({ roomName, children }) {
         </Header>
 
         {/* Main */}
-        <Box as="main" w="full" mx="auto" flex={1} p={4}>
+        <Flex flex={1} as="main" w="full" mx="auto" p={4}>
           {children}
-        </Box>
+        </Flex>
 
         {/* Sidebar */}
         <Box

@@ -1,31 +1,33 @@
-import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
-import { Button } from '@chakra-ui/button';
-import { Box, Flex } from '@chakra-ui/layout';
-import { Input } from '@chakra-ui/input';
+import { useAuth } from '@/lib/AuthContext';
 import { useMeetingContext } from '@/lib/MeetingContext';
 import { useVideoContext } from '@/lib/VideoContext';
-import { useAuth } from '@/lib/AuthContext';
+import { Button } from '@chakra-ui/button';
+import { FormControl } from '@chakra-ui/form-control';
+import { Box } from '@chakra-ui/layout';
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import RoomFormBox from './roomForm/RoomFormBox';
+import RoomFormHeading from './roomForm/RoomFormHeading';
+import RoomFormInput from './roomForm/RoomFormInput';
+import VideoPreview from './VideoPreview';
 
 export default function Lobby({ roomName }) {
   const { joinRoom, isFetching, identity } = useMeetingContext();
+  const { user } = useAuth();
   const {
     connect,
     isConnecting,
     isAcquiringLocalTracks,
     getAudioAndVideoTracks,
   } = useVideoContext();
-  const { user } = useAuth();
+  const [step, setStep] = useState(0);
   const [identityValue, setIdentityValue] = useState(
     user?.full_name || identity
   );
-  const [step, setStep] = useState(0);
-
-  const isLoading = isFetching || isConnecting || isAcquiringLocalTracks;
 
   useEffect(() => {
     if (identity || user?.full_name) {
-      setStep(1);
+      setIdentityValue(identity || user?.full_name);
     }
   }, [identity, user]);
 
@@ -39,34 +41,62 @@ export default function Lobby({ roomName }) {
     joinRoom(identityValue, roomName).then(({ token }) => connect(token));
   };
 
+  const isLoading = isFetching || isConnecting || isAcquiringLocalTracks;
+
   const identityStep = (
-    <Box
-      as="form"
-      onSubmit={(e) => {
-        e.preventDefault();
-        setStep(1);
-      }}
-    >
-      <Input
-        placeholder="Enter your name"
-        required
-        value={identityValue}
-        onChange={(e) => setIdentityValue(e.target.value)}
-      />
-      <Button type="submit">Continue</Button>
-    </Box>
+    <RoomFormBox>
+      <Box
+        as="form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          setStep(1);
+        }}
+      >
+        <FormControl id="name">
+          <RoomFormHeading>Enter your name</RoomFormHeading>
+          <RoomFormInput
+            mt={4}
+            name="name"
+            placeholder="Enter your name"
+            required
+            value={identityValue}
+            onChange={(e) => setIdentityValue(e.target.value)}
+          />
+        </FormControl>
+
+        <Button
+          w="full"
+          mt={6}
+          type="submit"
+          size="md"
+          mx="auto"
+          colorScheme="blue"
+        >
+          Continue
+        </Button>
+      </Box>
+    </RoomFormBox>
+  );
+
+  const previewStep = (
+    <RoomFormBox>
+      <VideoPreview />
+      <Button
+        mt={2}
+        onClick={handleJoin}
+        disabled={isLoading}
+        display="block"
+        mx="auto"
+      >
+        Join room
+      </Button>
+    </RoomFormBox>
   );
 
   return (
-    <Flex justify="center" align="center">
-      {step === 0 ? (
-        <>{identityStep}</>
-      ) : (
-        <Button onClick={handleJoin} disabled={isLoading}>
-          Join room
-        </Button>
-      )}
-    </Flex>
+    <Box w="full" mx="auto" maxW="sm" alignSelf="center">
+      {step === 0 ? identityStep : previewStep}
+    </Box>
   );
 }
 

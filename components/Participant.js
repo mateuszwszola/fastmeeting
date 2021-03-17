@@ -1,69 +1,11 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { useState, useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { Box } from '@chakra-ui/react';
+import PropTypes from 'prop-types';
 import IdentityText from './participant/IdentityText';
-import { trackpubsToTracks } from '@/utils/helpers';
+import useParticipant from './videoProvider/useParticipant';
 
 function Participant({ participant, local }) {
-  const [videoTracks, setVideoTracks] = useState([]);
-  const [audioTracks, setAudioTracks] = useState([]);
-  const videoRef = useRef();
-  const audioRef = useRef();
-
-  useEffect(() => {
-    const trackSubscribed = (track) => {
-      if (track.kind === 'video') {
-        setVideoTracks((prevVideoTracks) => [...prevVideoTracks, track]);
-      } else if (track.kind === 'audio') {
-        setAudioTracks((prevAudioTracks) => [...prevAudioTracks, track]);
-      }
-    };
-
-    const trackUnsubscribed = (track) => {
-      if (track.kind === 'video') {
-        setVideoTracks((prevVideoTracks) =>
-          prevVideoTracks.filter((t) => t !== track)
-        );
-      } else if (track.kind === 'audio') {
-        setAudioTracks((prevAudioTracks) =>
-          prevAudioTracks.filter((t) => t !== track)
-        );
-      }
-    };
-
-    setVideoTracks(trackpubsToTracks(participant.videoTracks));
-    setAudioTracks(trackpubsToTracks(participant.audioTracks));
-
-    participant.on('trackSubscribed', trackSubscribed);
-    participant.on('trackUnsubscribed', trackUnsubscribed);
-
-    return () => {
-      setVideoTracks([]);
-      setAudioTracks([]);
-      participant.removeAllListeners();
-    };
-  }, [participant]);
-
-  useEffect(() => {
-    const videoTrack = videoTracks[0];
-    if (videoTrack) {
-      videoTrack.attach(videoRef.current);
-      return () => {
-        videoTrack.detach();
-      };
-    }
-  }, [videoTracks]);
-
-  useEffect(() => {
-    const audioTrack = audioTracks[0];
-    if (audioTrack) {
-      audioTrack.attach(audioRef.current);
-      return () => {
-        audioTrack.detach();
-      };
-    }
-  }, [audioTracks]);
+  const { videoRef, audioRef } = useParticipant(participant);
 
   return (
     <Box position="relative" w="full" mx="auto">

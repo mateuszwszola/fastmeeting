@@ -12,11 +12,18 @@ export default function DisplayError({ error, onClose }) {
     return null;
   }
 
+  let description;
+
+  if (typeof error === 'string' || error.message) {
+    description = error.message || error;
+  }
+
   return (
     <Alert status="error">
       <AlertIcon />
       <AlertTitle mr={2}>Error happened!</AlertTitle>
-      {/* <AlertDescription>{error}</AlertDescription> */}
+      {typeof error === 'string' || error.message}
+      <AlertDescription>{description}</AlertDescription>
       <CloseButton
         onClick={onClose}
         position="absolute"
@@ -28,6 +35,6 @@ export default function DisplayError({ error, onClose }) {
 }
 
 DisplayError.propTypes = {
-  error: PropTypes.oneOf([PropTypes.string, null]),
+  error: PropTypes.any,
   onClose: PropTypes.func.isRequired,
 };

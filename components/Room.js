@@ -27,7 +27,7 @@ export default function Room() {
   ));
 
   return (
-    <>
+    <Box w="full" mx="auto">
       <SimpleGrid columns={[1, null, 2]} spacing={4}>
         {room && (
           <Participant local={true} participant={room.localParticipant} />
@@ -46,6 +46,6 @@ export default function Room() {
           {isUserRoomOwner && <EndMeetingButton />}
         </Controllers>
       </Box>
-    </>
+    </Box>
   );
 }

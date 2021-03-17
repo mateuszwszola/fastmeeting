@@ -1,4 +1,4 @@
-import { Heading } from '@chakra-ui/layout';
+import { Text, Spinner } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import DisplayError from '@/components/DisplayError';
 import Lobby from '@/components/Lobby';
@@ -8,7 +8,6 @@ import VideoProvider from '@/components/VideoProvider';
 import useDbRoom from '@/hooks/useDbRoom';
 import useRoomState from '@/hooks/useRoomState';
 import { useMeetingContext } from '@/lib/MeetingContext';
-import { Spinner } from '@chakra-ui/spinner';
 
 function Meeting() {
   const router = useRouter();
@@ -19,12 +18,17 @@ function Meeting() {
   return (
     <MeetingLayout roomName={roomName}>
       {error ? (
-        <Heading>Something went wrong...</Heading>
+        <Text mt={4}>Something went wrong...</Text>
       ) : isLoading ? (
-        <Spinner />
+        <Spinner
+          pos="absolute"
+          top="50%"
+          left="50%"
+          transform="translate(-50%, -50%)"
+          size="xl"
+        />
       ) : !dbRoom ? (
-        // Add empty state - room not found :(
-        <Heading>Room {roomName} does not exists</Heading>
+        <Text mt={4}>Room {roomName} does not exists</Text>
       ) : roomState === 'disconnected' ? (
         <Lobby roomName={roomName} />
       ) : (
