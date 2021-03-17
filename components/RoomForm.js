@@ -1,29 +1,20 @@
-import { useCallback, useState } from 'react';
-import { useRouter } from 'next/router';
-import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Heading,
-  Input,
-  Text,
-  useColorModeValue,
-} from '@chakra-ui/react';
-import { useMeetingContext } from '@/lib/MeetingContext';
+import useInput from '@/hooks/useInput';
 import { fetchRoom } from '@/lib/db';
+import { useMeetingContext } from '@/lib/MeetingContext';
+import { Box, Button, FormControl, FormLabel, Text } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import { useCallback, useState } from 'react';
+import RoomFormBox from './roomForm/RoomFormBox';
+import RoomFormHeading from './roomForm/RoomFormHeading';
+import RoomFormInput from './roomForm/RoomFormInput';
 
 function RoomForm() {
   const router = useRouter();
   const { identity, roomName, createRoom, isFetching } = useMeetingContext();
-  const [identityValue, setIdentityValue] = useState(identity || '');
-  const [roomNameValue, setRoomNameValue] = useState(roomName || '');
+  const [identityValue, handleIdentityValueChange] = useInput(identity || '');
+  const [roomNameValue, handleRoomNameValueChange] = useInput(roomName || '');
   const [isCreating, setIsCreating] = useState(true);
   const [error, setError] = useState(null);
-
-  const bgColor = useColorModeValue('white', 'gray.900');
-  const textColor = useColorModeValue('gray.700', 'white');
-  const inputBgColor = useColorModeValue('gray.50', 'gray.800');
 
   const onCreateToggle = useCallback(() => {
     setIsCreating((prev) => !prev);
@@ -53,75 +44,44 @@ function RoomForm() {
   };
 
   return (
-    <Box
-      w="full"
-      px={4}
-      py={8}
-      boxShadow="xl"
-      borderRadius="xl"
-      bgColor={bgColor}
-    >
-      <Heading
-        color={textColor}
-        as="h3"
-        fontSize={['2xl', '3xl']}
-        textAlign="center"
-        fontWeight="medium"
-      >
-        {isCreating ? 'Create' : 'Join'} room
-      </Heading>
+    <RoomFormBox>
+      <RoomFormHeading>{isCreating ? 'Create' : 'Join'} room</RoomFormHeading>
       {error && (
         <Text textAlign="center" my={2}>
           {error.message}
         </Text>
       )}
+
       <Box as="form" onSubmit={onSubmit} mt={6} w="full" maxW="xs" mx="auto">
         <FormControl id="name">
           <FormLabel>Display Name</FormLabel>
-          <Input
-            type="text"
-            id="name"
+          <RoomFormInput
+            name="name"
             value={identityValue}
-            onChange={(e) => setIdentityValue(e.target.value)}
+            onChange={handleIdentityValueChange}
             placeholder="Enter your name"
-            required
-            w="full"
-            h={12}
-            px={4}
-            borderRadius="md"
-            display="block"
-            bgColor={inputBgColor}
           />
         </FormControl>
 
         {!isCreating && (
           <FormControl mt={3} id="roomName">
             <FormLabel>fastmeeting/</FormLabel>
-            <Input
-              type="text"
-              id="roomName"
+            <RoomFormInput
+              name="roomName"
               value={roomNameValue}
-              onChange={(e) => setRoomNameValue(e.target.value)}
+              onChange={handleRoomNameValueChange}
               placeholder="Room name"
-              required
-              w="full"
-              h={12}
-              px={4}
-              borderRadius="md"
-              display="block"
-              bgColor={inputBgColor}
             />
           </FormControl>
         )}
 
         <Button
+          mt={6}
           isLoading={isFetching}
           type="submit"
+          size="lg"
           w="full"
           colorScheme="blue"
-          h={12}
-          px={6}
-          mt={6}
           mx="auto"
         >
           {isCreating ? 'Create' : 'Join'}
@@ -142,7 +102,7 @@ function RoomForm() {
       >
         Or {isCreating ? 'join' : 'create'} room instead
       </Button>
-    </Box>
+    </RoomFormBox>
   );
 }
 

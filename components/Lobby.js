@@ -11,6 +11,7 @@ export default function Lobby({ roomName }) {
   const { joinRoom, isFetching, identity } = useMeetingContext();
   const {
     connect,
+    isConnecting,
     isAcquiringLocalTracks,
     getAudioAndVideoTracks,
   } = useVideoContext();
@@ -19,6 +20,8 @@ export default function Lobby({ roomName }) {
     user?.full_name || identity
   );
   const [step, setStep] = useState(0);
+
+  const isLoading = isFetching || isConnecting || isAcquiringLocalTracks;
 
   useEffect(() => {
     if (identity || user?.full_name) {
@@ -59,10 +62,7 @@ export default function Lobby({ roomName }) {
       {step === 0 ? (
         <>{identityStep}</>
       ) : (
-        <Button
-          onClick={handleJoin}
-          disabled={isAcquiringLocalTracks || isFetching}
-        >
+        <Button onClick={handleJoin} disabled={isLoading}>
           Join room
         </Button>
       )}
