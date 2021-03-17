@@ -1,47 +1,16 @@
-import useInput from '@/hooks/useInput';
-import { fetchRoom } from '@/lib/db';
-import { useMeetingContext } from '@/lib/MeetingContext';
 import { Box, Button, FormControl, FormLabel, Text } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import { useCallback, useState } from 'react';
+import { useMeetingContext } from '@/lib/MeetingContext';
 import RoomFormBox from './roomForm/RoomFormBox';
 import RoomFormHeading from './roomForm/RoomFormHeading';
 import RoomFormInput from './roomForm/RoomFormInput';
+import useRoomForm from '@/components/roomForm/useRoomForm';
+import useInput from '@/hooks/useInput';
 
 function RoomForm() {
-  const router = useRouter();
-  const { identity, roomName, createRoom, isFetching } = useMeetingContext();
+  const { identity, roomName, isFetching } = useMeetingContext();
   const [identityValue, handleIdentityValueChange] = useInput(identity || '');
   const [roomNameValue, handleRoomNameValueChange] = useInput(roomName || '');
-  const [isCreating, setIsCreating] = useState(true);
-  const [error, setError] = useState(null);
-
-  const onCreateToggle = useCallback(() => {
-    setIsCreating((prev) => !prev);
-    setError(null);
-  }, []);
-
-  const onSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!identityValue || (!isCreating && !roomNameValue)) return;
-
-    try {
-      if (isCreating) {
-        const { roomName } = await createRoom(identityValue);
-        router.push(`/${roomName}`);
-      } else {
-        // Make sure room exists before joining it
-        const room = await fetchRoom(roomNameValue);
-        if (!room) {
-          throw new Error('Room does not exists');
-        }
-        router.push(`/${roomNameValue}`);
-      }
-    } catch (error) {
-      setError(error);
-    }
-  };
+  const [isCreating, error, { onCreateToggle, onSubmit }] = useRoomForm();
 
   return (
     <RoomFormBox>
@@ -52,7 +21,14 @@ function RoomForm() {
         </Text>
       )}
 
-      <Box as="form" onSubmit={onSubmit} mt={6} w="full" maxW="xs" mx="auto">
+      <Box
+        as="form"
+        onSubmit={onSubmit({ identity: identityValue, roomName })}
+        mt={6}
+        w="full"
+        maxW="xs"
+        mx="auto"
+      >
         <FormControl id="name">
           <FormLabel>Display Name</FormLabel>
           <RoomFormInput

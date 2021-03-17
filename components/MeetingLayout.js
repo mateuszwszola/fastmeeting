@@ -26,7 +26,7 @@ export default function MeetingLayout({ roomName, children }) {
         bgColor={bgColor}
       >
         <Header>
-          <Nav>
+          <Nav maxW="100%">
             <Flex align="center">
               <NavLink
                 href="/"
@@ -47,7 +47,7 @@ export default function MeetingLayout({ roomName, children }) {
         </Header>
 
         {/* Main */}
-        <Box as="main" w="full" maxWidth="1280px" mx="auto" flex={1} p={4}>
+        <Box as="main" w="full" mx="auto" flex={1} p={4}>
           {children}
         </Box>
 
