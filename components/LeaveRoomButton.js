@@ -1,27 +1,23 @@
+import { useCallback } from 'react';
 import { Box, IconButton, Text } from '@chakra-ui/react';
-import { useVideoContext } from '@/lib/VideoContext';
 import { FaHandPaper } from 'react-icons/fa';
-import { useMeeting } from '@/lib/MeetingContext';
+import { useVideoContext } from '@/lib/VideoContext';
 
-const LeaveRoomButton = () => {
-  const { isConnecting, leave } = useVideoContext();
-  const { logout } = useMeeting();
+export default function LeaveRoomButton() {
+  const { room, isConnecting } = useVideoContext();
 
-  const handleClick = () => {
-    leave();
-    logout();
-  };
+  const handleLeave = useCallback(() => {
+    room.disconnect();
+  }, [room]);
 
   return (
     <Box>
       <IconButton
         isDisabled={isConnecting}
-        onClick={handleClick}
+        onClick={handleLeave}
         icon={<FaHandPaper />}
       />
       <Text>Leave</Text>
     </Box>
   );
-};
-
-export default LeaveRoomButton;
+}

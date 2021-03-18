@@ -24,6 +24,7 @@ export default async function handler(req, res) {
 
     try {
       if (StatusCallbackEvent === 'room-ended') {
+        // If the user does not save created room, it will be deleted
         await deleteAnonymousRoom(RoomName);
       }
     } catch (error) {

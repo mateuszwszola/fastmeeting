@@ -1,43 +1,49 @@
+import { Text, Spinner } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { useMeeting } from '@/lib/MeetingContext';
-import { useVideoContext } from '@/lib/VideoContext';
+// import DisplayError from '@/components/DisplayError';
+import Lobby from '@/components/Lobby';
 import MeetingLayout from '@/components/MeetingLayout';
-import VideoProvider from '@/components/VideoProvider';
 import Room from '@/components/Room';
+import VideoProvider from '@/components/VideoProvider';
+import useDbRoom from '@/hooks/useDbRoom';
+import useRoomState from '@/hooks/useRoomState';
+import { useMeetingContext } from '@/lib/MeetingContext';
 
 function Meeting() {
   const router = useRouter();
   const { roomName } = router.query;
-  const { token } = useMeeting();
-  const { connect, leave, getAudioAndVideoTracks } = useVideoContext();
-
-  useEffect(() => {
-    if (!token) {
-      router.push(`/?roomName=${roomName}`);
-    }
-  }, [roomName, router, token]);
-
-  useEffect(() => {
-    if (token) {
-      getAudioAndVideoTracks().then((tracks) => connect(token, tracks));
-
-      return () => {
-        leave();
-      };
-    }
-  }, [connect, getAudioAndVideoTracks, leave, token]);
+  const { room: dbRoom, isLoading, error } = useDbRoom(roomName);
+  const roomState = useRoomState();
 
   return (
-    <MeetingLayout>
-      <Room />
+    <MeetingLayout roomName={roomName}>
+      {error ? (
+        <Text mt={4}>Something went wrong...</Text>
+      ) : isLoading ? (
+        <Spinner
+          pos="absolute"
+          top="50%"
+          left="50%"
+          transform="translate(-50%, -50%)"
+          size="xl"
+        />
+      ) : !dbRoom ? (
+        <Text mt={4}>Room {roomName} does not exists</Text>
+      ) : roomState === 'disconnected' ? (
+        <Lobby roomName={roomName} />
+      ) : (
+        <Room roomName={roomName} />
+      )}
     </MeetingLayout>
   );
 }
 
-export default function MeetingContainer() {
+export default function MeetingPage() {
+  const { setError } = useMeetingContext();
+
   return (
-    <VideoProvider>
+    <VideoProvider onError={setError}>
+      {/* <DisplayError error={error} onClose={() => setError(null)} /> */}
       <Meeting />
     </VideoProvider>
   );
