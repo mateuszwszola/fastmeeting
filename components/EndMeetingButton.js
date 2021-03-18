@@ -70,10 +70,19 @@ export default function EndMeetingButton() {
             </AlertDialogBody>
 
             <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={() => setIsOpen(false)}>
+              <Button
+                isDisabled={isLoading}
+                ref={cancelRef}
+                onClick={() => setIsOpen(false)}
+              >
                 Cancel
               </Button>
-              <Button colorScheme="red" onClick={handleMeetingEnd} ml={3}>
+              <Button
+                isLoading={isLoading}
+                colorScheme="red"
+                onClick={handleMeetingEnd}
+                ml={3}
+              >
                 End
               </Button>
             </AlertDialogFooter>

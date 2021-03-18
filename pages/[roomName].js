@@ -1,6 +1,6 @@
 import { Text, Spinner } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import DisplayError from '@/components/DisplayError';
+// import DisplayError from '@/components/DisplayError';
 import Lobby from '@/components/Lobby';
 import MeetingLayout from '@/components/MeetingLayout';
 import Room from '@/components/Room';
@@ -32,18 +32,18 @@ function Meeting() {
       ) : roomState === 'disconnected' ? (
         <Lobby roomName={roomName} />
       ) : (
-        <Room />
+        <Room roomName={roomName} />
       )}
     </MeetingLayout>
   );
 }
 
 export default function MeetingPage() {
-  const { error, setError } = useMeetingContext();
+  const { setError } = useMeetingContext();
 
   return (
     <VideoProvider onError={setError}>
-      <DisplayError error={error} onClose={() => setError(null)} />
+      {/* <DisplayError error={error} onClose={() => setError(null)} /> */}
       <Meeting />
     </VideoProvider>
   );

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Box, SimpleGrid } from '@chakra-ui/react';
 import { useVideoContext } from '@/lib/VideoContext';
 import useParticipants from './videoProvider/useParticipants';
@@ -10,9 +11,9 @@ import LeaveRoomButton from './LeaveRoomButton';
 import { useAuth } from '@/lib/AuthContext';
 import EndMeetingButton from './EndMeetingButton';
 
-export default function Room() {
+export default function Room({ roomName }) {
   const { room } = useVideoContext();
-  const { room: dbRoom } = useDbRoom(room.name);
+  const { room: dbRoom } = useDbRoom(roomName);
   const { user } = useAuth();
   const participants = useParticipants(room);
 
@@ -29,9 +30,8 @@ export default function Room() {
   return (
     <Box w="full" mx="auto">
       <SimpleGrid columns={[1, null, 2]} spacing={4}>
-        {room && (
-          <Participant local={true} participant={room.localParticipant} />
-        )}
+        <Participant local={true} participant={room.localParticipant} />
+
         {remoteParticipants}
       </SimpleGrid>
 
@@ -49,3 +49,7 @@ export default function Room() {
     </Box>
   );
 }
+
+Room.propTypes = {
+  roomName: PropTypes.string.isRequired,
+};

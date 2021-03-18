@@ -46,6 +46,8 @@ export default function Lobby({ roomName }) {
   const identityStep = (
     <RoomFormBox>
       <Box
+        mx="auto"
+        maxW="xs"
         as="form"
         onSubmit={(e) => {
           e.preventDefault();
@@ -55,7 +57,7 @@ export default function Lobby({ roomName }) {
         <FormControl id="name">
           <RoomFormHeading>Enter your name</RoomFormHeading>
           <RoomFormInput
-            mt={4}
+            mt={6}
             name="name"
             placeholder="Enter your name"
             required
@@ -82,13 +84,15 @@ export default function Lobby({ roomName }) {
     <RoomFormBox>
       <VideoPreview />
       <Button
-        mt={2}
+        w="full"
+        mt={6}
+        colorScheme="blue"
         onClick={handleJoin}
         disabled={isLoading}
         display="block"
         mx="auto"
       >
-        Join room
+        Join meeting
       </Button>
     </RoomFormBox>
   );
