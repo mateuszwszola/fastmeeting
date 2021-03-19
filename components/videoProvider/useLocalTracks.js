@@ -41,9 +41,7 @@ export default function useLocalTracks() {
       .finally(() => setIsAcquiringLocalTracks(false));
   }, []);
 
-  const localTracks = [audioTrack, videoTrack].filter(
-    (track) => track !== undefined
-  );
+  const localTracks = [audioTrack, videoTrack].filter((track) => !!track);
 
   return {
     localTracks,

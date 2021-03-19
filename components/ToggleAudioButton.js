@@ -1,39 +1,41 @@
-import { useCallback, useState } from 'react';
-import { Box, IconButton, Text } from '@chakra-ui/react';
+import { useCallback, useEffect, useState } from 'react';
 import { FaMicrophone, FaMicrophoneSlash } from 'react-icons/fa';
+import { Box, IconButton } from '@chakra-ui/react';
 import { useVideoContext } from '@/lib/VideoContext';
-import { trackpubsToTracks } from '@/utils/helpers';
 
-const ToggleAudioButton = () => {
-  const { room } = useVideoContext();
-  const [isEnabled, setIsEnabled] = useState(true);
+const ToggleAudioButton = ({ children }) => {
+  const { localTracks, isAcquiringLocalTracks } = useVideoContext();
+  const [isAudioEnabled, setIsAudioEnabled] = useState(() => {
+    const audioTrack = localTracks.find((track) => track.kind === 'audio');
+    return audioTrack?.isEnabled || false;
+  });
+
+  useEffect(() => {
+    const audioTrack = localTracks.find((track) => track.kind === 'audio');
+
+    setIsAudioEnabled(audioTrack?.isEnabled || false);
+  }, [localTracks]);
 
   const toggleAudioEnabled = useCallback(() => {
-    if (!room) return;
+    const audioTrack = localTracks.find((track) => track.kind === 'audio');
 
-    const audioTracks = trackpubsToTracks(room.localParticipant.audioTracks);
-
-    if (isEnabled) {
-      audioTracks.forEach((track) => {
-        track.disable();
-      });
+    if (isAudioEnabled) {
+      audioTrack.disable();
     } else {
-      audioTracks.forEach((track) => {
-        track.enable();
-      });
+      audioTrack.enable();
     }
 
-    setIsEnabled((prevState) => !prevState);
-  }, [isEnabled, room]);
+    setIsAudioEnabled((prevState) => !prevState);
+  }, [isAudioEnabled, localTracks]);
 
   return (
     <Box>
       <IconButton
-        isDisabled={!room}
+        isDisabled={isAcquiringLocalTracks}
         onClick={toggleAudioEnabled}
-        icon={isEnabled ? <FaMicrophone /> : <FaMicrophoneSlash />}
+        icon={isAudioEnabled ? <FaMicrophone /> : <FaMicrophoneSlash />}
       />
-      <Text>Mic</Text>
+      {children}
     </Box>
   );
 };

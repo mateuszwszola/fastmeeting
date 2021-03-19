@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
-import { Box, SimpleGrid } from '@chakra-ui/react';
+import { Box, SimpleGrid, Text } from '@chakra-ui/react';
 import { useVideoContext } from '@/lib/VideoContext';
+import { useAuth } from '@/lib/AuthContext';
+import useDbRoom from '@/hooks/useDbRoom';
 import useParticipants from './videoProvider/useParticipants';
 import Participant from './Participant';
-import useDbRoom from '@/hooks/useDbRoom';
-import Controllers from './meetingLayout/Controllers';
+import Controllers from './Controllers';
 import ToggleVideoButton from './ToggleVideoButton';
 import ToggleAudioButton from './ToggleAudioButton';
 import LeaveRoomButton from './LeaveRoomButton';
-import { useAuth } from '@/lib/AuthContext';
 import EndMeetingButton from './EndMeetingButton';
 
 export default function Room({ roomName }) {
@@ -37,9 +37,13 @@ export default function Room({ roomName }) {
 
       <Box position="fixed" bottom="0" left="0" right="0">
         <Controllers>
-          <ToggleVideoButton />
+          <ToggleVideoButton>
+            <Text>Cam</Text>
+          </ToggleVideoButton>
 
-          <ToggleAudioButton />
+          <ToggleAudioButton>
+            <Text>Mic</Text>
+          </ToggleAudioButton>
 
           <LeaveRoomButton />
 

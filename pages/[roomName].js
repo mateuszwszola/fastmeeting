@@ -43,7 +43,6 @@ export default function MeetingPage() {
 
   return (
     <VideoProvider onError={setError}>
-      {/* <DisplayError error={error} onClose={() => setError(null)} /> */}
       <Meeting />
     </VideoProvider>
   );
