@@ -3,6 +3,7 @@ import {
   getMessagesByRoomId,
   getUnlockedRoomBySlug,
 } from '@/lib/dbAdmin';
+import { retrieveInProgressRoom } from '@/lib/twilioAdmin';
 
 export default async function handler(req, res) {
   try {
@@ -18,6 +19,9 @@ export default async function handler(req, res) {
     if (!room) {
       return res.status(404).json({ message: `Room ${roomName} not found` });
     }
+
+    // Make sure meeting is in progress
+    await retrieveInProgressRoom(roomName);
 
     if (req.method === 'GET') {
       const messages = await getMessagesByRoomId(room.id);
