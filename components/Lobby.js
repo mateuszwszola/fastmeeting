@@ -88,8 +88,12 @@ export default function Lobby({ roomName }) {
       <Box pos="relative">
         <VideoPreview />
         <Controllers pos="absolute" bottom="0" left="0" right="0" p={2}>
-          <ToggleVideoButton />
-          <ToggleAudioButton />
+          {!isAcquiringLocalTracks && (
+            <>
+              <ToggleVideoButton />
+              <ToggleAudioButton />
+            </>
+          )}
         </Controllers>
       </Box>
       <Button

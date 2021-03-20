@@ -50,19 +50,6 @@ export default function MeetingLayout({ roomName, children }) {
         <Flex flex={1} as="main" w="full" mx="auto" p={4}>
           {children}
         </Flex>
-
-        {/* Sidebar */}
-        <Box
-          display="none"
-          as="nav"
-          w={64}
-          bgColor="gray.900"
-          color="gray.100"
-          overflow="scroll"
-          maxW="20%"
-          minWidth="150px"
-          maxHeight="100vh"
-        ></Box>
       </Flex>
     </>
   );

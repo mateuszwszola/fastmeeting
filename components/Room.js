@@ -1,21 +1,28 @@
-import PropTypes from 'prop-types';
-import { Box, SimpleGrid, Text } from '@chakra-ui/react';
-import { useVideoContext } from '@/lib/VideoContext';
-import { useAuth } from '@/lib/AuthContext';
 import useDbRoom from '@/hooks/useDbRoom';
-import useParticipants from './videoProvider/useParticipants';
-import Participant from './Participant';
+import { useAuth } from '@/lib/AuthContext';
+import { useVideoContext } from '@/lib/VideoContext';
+import { Box, SimpleGrid, Text, useDisclosure } from '@chakra-ui/react';
+import PropTypes from 'prop-types';
+import Chat from './Chat';
 import Controllers from './Controllers';
-import ToggleVideoButton from './ToggleVideoButton';
-import ToggleAudioButton from './ToggleAudioButton';
-import LeaveRoomButton from './LeaveRoomButton';
 import EndMeetingButton from './EndMeetingButton';
+import LeaveRoomButton from './LeaveRoomButton';
+import Participant from './Participant';
+import ToggleAudioButton from './ToggleAudioButton';
+import ToggleChatButton from './ToggleChatButton';
+import ToggleVideoButton from './ToggleVideoButton';
+import useParticipants from './videoProvider/useParticipants';
 
 export default function Room({ roomName }) {
   const { room } = useVideoContext();
   const { room: dbRoom } = useDbRoom(roomName);
   const { user } = useAuth();
   const participants = useParticipants(room);
+  const {
+    isOpen: isChatOpen,
+    onClose: onChatClose,
+    onToggle: onChatToggle,
+  } = useDisclosure();
 
   const isUserRoomOwner = dbRoom && user && dbRoom.owner_id === user.id;
 
@@ -48,6 +55,17 @@ export default function Room({ roomName }) {
           <LeaveRoomButton />
 
           {isUserRoomOwner && <EndMeetingButton />}
+
+          <ToggleChatButton onToggle={onChatToggle}>
+            <Text>Chat</Text>
+          </ToggleChatButton>
+
+          <Chat
+            isOpen={isChatOpen}
+            onClose={onChatClose}
+            roomName={roomName}
+            identity={user.full_name || room.localParticipant.identity}
+          />
         </Controllers>
       </Box>
     </Box>
