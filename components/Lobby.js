@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Flex, Button, FormControl } from '@chakra-ui/react';
+import { Box, Button, FormControl } from '@chakra-ui/react';
 import { useAuth } from '@/lib/AuthContext';
 import { useMeetingContext } from '@/lib/MeetingContext';
 import { useVideoContext } from '@/lib/VideoContext';
