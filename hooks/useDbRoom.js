@@ -1,7 +1,7 @@
 import { fetchRoom } from '@/lib/db';
 import { useEffect, useReducer } from 'react';
 
-function reducer(state, action) {
+function reducer(_state, action) {
   const { type, payload } = action;
 
   switch (type) {
@@ -10,7 +10,9 @@ function reducer(state, action) {
     case 'error':
       return { isLoading: false, error: payload, room: null };
     default:
-      throw new Error();
+      throw new Error(
+        `Action type: ${type} in useDbRoom reducer does not exists`
+      );
   }
 }
 
@@ -22,6 +24,8 @@ export default function useDbRoom(roomSlug) {
   });
 
   useEffect(() => {
+    if (!roomSlug) return;
+
     fetchRoom(roomSlug)
       .then((room) => {
         dispatch({ type: 'success', payload: room });

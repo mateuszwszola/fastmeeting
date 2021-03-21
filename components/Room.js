@@ -1,12 +1,25 @@
 import useDbRoom from '@/hooks/useDbRoom';
 import { useAuth } from '@/lib/AuthContext';
 import { useVideoContext } from '@/lib/VideoContext';
-import { Box, SimpleGrid, Text, useDisclosure } from '@chakra-ui/react';
+import {
+  Box,
+  SimpleGrid,
+  Flex,
+  Text,
+  useDisclosure,
+  Grid,
+} from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import Chat from './Chat';
 import Controllers from './Controllers';
 import EndMeetingButton from './EndMeetingButton';
+import Logo from './icons/Logo';
+import Header from './layout/Header';
+import Nav from './layout/Nav';
+import NavLink from './layout/NavLink';
 import LeaveRoomButton from './LeaveRoomButton';
+import MeetingLayout from './MeetingLayout';
+import CopyLinkButton from './meetingLayout/CopyLinkButton';
 import Participant from './Participant';
 import ToggleAudioButton from './ToggleAudioButton';
 import ToggleChatButton from './ToggleChatButton';
@@ -35,14 +48,40 @@ export default function Room({ roomName }) {
   ));
 
   return (
-    <Box w="full" mx="auto">
-      <SimpleGrid columns={[1, null, 2]} spacing={4}>
-        <Participant local={true} participant={room.localParticipant} />
+    <MeetingLayout>
+      <Grid w="full" templateRows="65px auto 90px">
+        <Header>
+          <Nav>
+            <Flex align="center">
+              <NavLink
+                href="/"
+                leftIcon={<Logo w={8} h={8} color="blue.500" />}
+              >
+                <Text as="span" display={['none', 'inline']} fontWeight="bold">
+                  Fast Meeting
+                </Text>
+              </NavLink>
+              <Box ml={4}>
+                <Text fontWeight="medium">/{roomName}</Text>
+              </Box>
+            </Flex>
 
-        {remoteParticipants}
-      </SimpleGrid>
+            <CopyLinkButton />
+          </Nav>
+        </Header>
 
-      <Box position="fixed" bottom="0" left="0" right="0">
+        <SimpleGrid
+          w="full"
+          p={2}
+          columns={[1, null, 2]}
+          spacing={4}
+          alignItems="center"
+        >
+          <Participant local={true} participant={room.localParticipant} />
+
+          {remoteParticipants}
+        </SimpleGrid>
+
         <Controllers>
           <ToggleVideoButton>
             <Text>Cam</Text>
@@ -52,23 +91,30 @@ export default function Room({ roomName }) {
             <Text>Mic</Text>
           </ToggleAudioButton>
 
-          <LeaveRoomButton />
+          <LeaveRoomButton>
+            <Text>Leave</Text>
+          </LeaveRoomButton>
 
-          {isUserRoomOwner && <EndMeetingButton />}
+          {isUserRoomOwner && (
+            <EndMeetingButton>
+              <Text>End</Text>
+            </EndMeetingButton>
+          )}
 
           <ToggleChatButton onToggle={onChatToggle}>
             <Text>Chat</Text>
           </ToggleChatButton>
-
-          <Chat
-            isOpen={isChatOpen}
-            onClose={onChatClose}
-            roomName={roomName}
-            identity={user.full_name || room.localParticipant.identity}
-          />
         </Controllers>
-      </Box>
-    </Box>
+      </Grid>
+
+      {isChatOpen && (
+        <Chat
+          onClose={onChatClose}
+          roomName={roomName}
+          identity={user?.full_name || room.localParticipant.identity}
+        />
+      )}
+    </MeetingLayout>
   );
 }
 

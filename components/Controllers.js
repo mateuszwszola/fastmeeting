@@ -6,7 +6,7 @@ const Controllers = ({ children, ...props }) => {
       w="full"
       justify="center"
       align="center"
-      p={4}
+      p={2}
       spacing={4}
       fontSize="sm"
       textAlign="center"

@@ -1,11 +1,9 @@
+import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { Box, Flex, Button, FormControl } from '@chakra-ui/react';
 import { useAuth } from '@/lib/AuthContext';
 import { useMeetingContext } from '@/lib/MeetingContext';
 import { useVideoContext } from '@/lib/VideoContext';
-import { Button } from '@chakra-ui/button';
-import { FormControl } from '@chakra-ui/form-control';
-import { Box } from '@chakra-ui/layout';
-import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
 import Controllers from './Controllers';
 import RoomFormBox from './roomForm/RoomFormBox';
 import RoomFormHeading from './roomForm/RoomFormHeading';
@@ -111,7 +109,7 @@ export default function Lobby({ roomName }) {
   );
 
   return (
-    <Box w="full" mx="auto" maxW="sm" alignSelf="center">
+    <Box w="full" maxW="sm" mx="auto" alignSelf="center">
       {step === 0 ? identityStep : previewStep}
     </Box>
   );
