@@ -1,14 +1,15 @@
+import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { Box, Button, FormControl } from '@chakra-ui/react';
 import { useAuth } from '@/lib/AuthContext';
 import { useMeetingContext } from '@/lib/MeetingContext';
 import { useVideoContext } from '@/lib/VideoContext';
-import { Button } from '@chakra-ui/button';
-import { FormControl } from '@chakra-ui/form-control';
-import { Box } from '@chakra-ui/layout';
-import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import Controllers from './Controllers';
 import RoomFormBox from './roomForm/RoomFormBox';
 import RoomFormHeading from './roomForm/RoomFormHeading';
 import RoomFormInput from './roomForm/RoomFormInput';
+import ToggleAudioButton from './ToggleAudioButton';
+import ToggleVideoButton from './ToggleVideoButton';
 import VideoPreview from './VideoPreview';
 
 export default function Lobby({ roomName }) {
@@ -82,7 +83,17 @@ export default function Lobby({ roomName }) {
 
   const previewStep = (
     <RoomFormBox>
-      <VideoPreview />
+      <Box pos="relative">
+        <VideoPreview />
+        <Controllers pos="absolute" bottom="0" left="0" right="0" p={2}>
+          {!isAcquiringLocalTracks && (
+            <>
+              <ToggleVideoButton />
+              <ToggleAudioButton />
+            </>
+          )}
+        </Controllers>
+      </Box>
       <Button
         w="full"
         mt={6}
@@ -98,7 +109,7 @@ export default function Lobby({ roomName }) {
   );
 
   return (
-    <Box w="full" mx="auto" maxW="sm" alignSelf="center">
+    <Box w="full" maxW="sm" mx="auto" alignSelf="center">
       {step === 0 ? identityStep : previewStep}
     </Box>
   );

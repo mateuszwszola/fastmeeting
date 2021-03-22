@@ -23,7 +23,10 @@ function RoomForm() {
 
       <Box
         as="form"
-        onSubmit={onSubmit({ identity: identityValue, roomName })}
+        onSubmit={onSubmit({
+          identity: identityValue,
+          roomName: roomNameValue,
+        })}
         mt={6}
         w="full"
         maxW="xs"

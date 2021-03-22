@@ -1,5 +1,5 @@
 import twilioClient from 'twilio';
-import { deleteAnonymousRoom } from '@/lib/dbAdmin';
+import { clearRoomMessages, deleteAnonymousRoom } from '@/lib/dbAdmin';
 import { getWebhookStatusCallback } from '@/utils/helpers';
 
 const authToken = process.env.TWILIO_AUTH_TOKEN;
@@ -24,8 +24,10 @@ export default async function handler(req, res) {
 
     try {
       if (StatusCallbackEvent === 'room-ended') {
-        // If the user does not save created room, it will be deleted
+        // If the user has not saved the room, delete it
         await deleteAnonymousRoom(RoomName);
+        // Clear chat messages
+        await clearRoomMessages(RoomName);
       }
     } catch (error) {
       console.log(error);

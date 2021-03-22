@@ -4,7 +4,6 @@ import {
   useToast,
   Box,
   IconButton,
-  Text,
   AlertDialog,
   AlertDialogBody,
   AlertDialogFooter,
@@ -17,7 +16,7 @@ import { useAuth } from '@/lib/AuthContext';
 import { MdCallEnd } from 'react-icons/md';
 import fetcher from '@/utils/fetcher';
 
-export default function EndMeetingButton() {
+export default function EndMeetingButton({ children, ...props }) {
   const router = useRouter();
   const { roomName } = router.query;
   const { session } = useAuth();
@@ -50,8 +49,9 @@ export default function EndMeetingButton() {
           onClick={() => setIsOpen(true)}
           isDisabled={isLoading}
           icon={<MdCallEnd />}
+          {...props}
         />
-        <Text>End</Text>
+        {children}
       </Box>
 
       <AlertDialog

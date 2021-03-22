@@ -1,39 +1,41 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { FaVideo, FaVideoSlash } from 'react-icons/fa';
-import { Box, IconButton, Text } from '@chakra-ui/react';
+import { Box, IconButton } from '@chakra-ui/react';
 import { useVideoContext } from '@/lib/VideoContext';
-import { trackpubsToTracks } from '@/utils/helpers';
 
-const ToggleVideoButton = () => {
-  const { room } = useVideoContext();
-  const [isVideoEnabled, setIsVideoEnabled] = useState(true);
+const ToggleVideoButton = ({ children }) => {
+  const { localTracks, isAcquiringLocalTracks } = useVideoContext();
+  const [isVideoEnabled, setIsVideoEnabled] = useState(() => {
+    const videoTrack = localTracks.find((track) => track.kind === 'video');
+    return videoTrack?.isEnabled || false;
+  });
+
+  useEffect(() => {
+    const videoTrack = localTracks.find((track) => track.kind === 'video');
+
+    setIsVideoEnabled(videoTrack?.isEnabled || false);
+  }, [localTracks]);
 
   const toggleVideoEnabled = useCallback(() => {
-    if (!room) return;
-
-    const videoTracks = trackpubsToTracks(room.localParticipant.videoTracks);
+    const videoTrack = localTracks.find((track) => track.kind === 'video');
 
     if (isVideoEnabled) {
-      videoTracks.forEach((track) => {
-        track.disable();
-      });
+      videoTrack.disable();
     } else {
-      videoTracks.forEach((track) => {
-        track.enable();
-      });
+      videoTrack.enable();
     }
 
     setIsVideoEnabled((prevState) => !prevState);
-  }, [isVideoEnabled, room]);
+  }, [isVideoEnabled, localTracks]);
 
   return (
     <Box>
       <IconButton
-        isDisabled={!room}
+        isDisabled={isAcquiringLocalTracks}
         onClick={toggleVideoEnabled}
         icon={isVideoEnabled ? <FaVideo /> : <FaVideoSlash />}
       />
-      <Text>Cam</Text>
+      {children}
     </Box>
   );
 };
