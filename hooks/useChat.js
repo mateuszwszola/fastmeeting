@@ -7,7 +7,8 @@ import useSWR from 'swr';
 export default function useChat(roomName) {
   const { data, error, mutate } = useSWR(
     `/api/messages?roomName=${roomName}`,
-    fetcher
+    fetcher,
+    { refreshInterval: 1000 }
   );
   const toast = useToast();
 

@@ -1,4 +1,4 @@
-import { Text, Spinner, Flex } from '@chakra-ui/react';
+import { Text, Spinner } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import Lobby from '@/components/Lobby';
 import Room from '@/components/Room';
@@ -6,6 +6,7 @@ import VideoProvider from '@/components/VideoProvider';
 import useDbRoom from '@/hooks/useDbRoom';
 import useRoomState from '@/hooks/useRoomState';
 import { useMeetingContext } from '@/lib/MeetingContext';
+import MeetingLayout from '@/components/MeetingLayout';
 
 function Meeting() {
   const router = useRouter();
@@ -14,7 +15,7 @@ function Meeting() {
   const roomState = useRoomState();
 
   return (
-    <Flex w="full" h="100vh" direction="column" justify="center" align="center">
+    <MeetingLayout>
       {error ? (
         <Text>Something went wrong...</Text>
       ) : isLoading ? (
@@ -26,7 +27,7 @@ function Meeting() {
       ) : (
         <Room roomName={roomName} />
       )}
-    </Flex>
+    </MeetingLayout>
   );
 }
 

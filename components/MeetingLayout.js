@@ -11,7 +11,13 @@ export default function MeetingLayout({ children }) {
         <title>Meeting | {APP_NAME}</title>
       </Head>
 
-      <Flex w="full" height="100vh" bgColor={bgColor}>
+      <Flex
+        w="full"
+        height="100vh"
+        justify="center"
+        align="center"
+        bgColor={bgColor}
+      >
         {children}
       </Flex>
     </>

@@ -18,7 +18,6 @@ import Header from './layout/Header';
 import Nav from './layout/Nav';
 import NavLink from './layout/NavLink';
 import LeaveRoomButton from './LeaveRoomButton';
-import MeetingLayout from './MeetingLayout';
 import CopyLinkButton from './meetingLayout/CopyLinkButton';
 import Participant from './Participant';
 import ToggleAudioButton from './ToggleAudioButton';
@@ -48,7 +47,7 @@ export default function Room({ roomName }) {
   ));
 
   return (
-    <MeetingLayout>
+    <Flex w="full" h="100vh">
       <Grid w="full" templateRows="65px auto 90px">
         <Header>
           <Nav>
@@ -114,7 +113,7 @@ export default function Room({ roomName }) {
           identity={user?.full_name || room.localParticipant.identity}
         />
       )}
-    </MeetingLayout>
+    </Flex>
   );
 }
 

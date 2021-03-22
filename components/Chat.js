@@ -5,11 +5,14 @@ import {
   Flex,
   Grid,
   Input,
+  ListItem,
   Text,
+  UnorderedList,
   useBreakpointValue,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const mobileProps = {
   pos: 'absolute',
@@ -20,13 +23,25 @@ const mobileProps = {
 };
 
 const desktopProps = {
-  width: '300px',
+  width: '350px',
 };
 
 function Chat({ onClose, roomName, identity }) {
   const [message, setMessage] = useState('');
   const chatProps = useBreakpointValue({ base: mobileProps, md: desktopProps });
   const { messages, error, addMessage } = useChat(roomName);
+  const bgColor = useColorModeValue('white', 'black');
+  const borderColor = useColorModeValue('gray.200', 'gray.800');
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({
+        block: 'start',
+        behavior: 'smooth',
+      });
+    }
+  }, [messages]);
 
   const addMessageOnEnter = async (e) => {
     if (e.keyCode === 13) {
@@ -44,13 +59,13 @@ function Chat({ onClose, roomName, identity }) {
   return (
     <Grid
       height="100vh"
-      templateRows="65px auto 65px"
-      bgColor="black"
-      color="white"
+      templateRows="65px auto 90px"
+      bgColor={bgColor}
+      boxShadow="md"
       {...chatProps}
     >
-      <Flex w="full" justify="flex-end" p={2}>
-        <CloseButton onClick={onClose} />
+      <Flex w="full" justify="flex-end" align="center" p={2}>
+        <CloseButton size="lg" onClick={onClose} />
       </Flex>
 
       <Box overflowY="auto" px={4} py={2}>
@@ -59,36 +74,35 @@ function Chat({ onClose, roomName, identity }) {
         ) : !messages ? (
           <Text>Loading...</Text>
         ) : (
-          <>
+          <UnorderedList spacing={5} listStyleType="none" m={0}>
             {messages.map((message) => {
               return (
-                <Box
-                  mt={2}
+                <ListItem
                   p={2}
-                  bgColor="blue"
+                  bgColor="blue.500"
                   color="white"
                   key={message.id}
                   textAlign="left"
                   rounded="md"
                 >
-                  <Text>{message.identity}</Text>
-                  <Text>{message.message}</Text>
-                </Box>
+                  <Text fontWeight="medium">{message.identity}</Text>
+                  <Text mt={1}>{message.message}</Text>
+                </ListItem>
               );
             })}
-          </>
+            <ListItem ref={messagesEndRef} height={0} />
+          </UnorderedList>
         )}
       </Box>
 
-      <Box p={2}>
+      <Flex align="center" borderTop="2px" borderColor={borderColor} p={2}>
         <Input
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          bgColor="gray.50"
           placeholder="Enter a message"
           onKeyDown={addMessageOnEnter}
         />
-      </Box>
+      </Flex>
     </Grid>
   );
 }
