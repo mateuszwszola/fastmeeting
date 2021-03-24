@@ -11,6 +11,7 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:jsx-a11y/recommended',
     'plugin:prettier/recommended',
+    'plugin:cypress/recommended',
   ],
   parserOptions: {
     ecmaFeatures: {
@@ -24,7 +25,7 @@ module.exports = {
       version: 'detect',
     },
   },
-  plugins: ['react', 'simple-import-sort'],
+  plugins: ['react', 'simple-import-sort', 'cypress'],
   rules: {
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
     'react/react-in-jsx-scope': 'off',

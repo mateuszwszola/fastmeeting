@@ -28,6 +28,7 @@ function Home() {
             textAlign={{ sm: 'center' }}
           >
             <Heading
+              data-cy="main-heading"
               as="h1"
               size="2xl"
               bgGradient="linear(to-l, yellow.400,blue.500)"
