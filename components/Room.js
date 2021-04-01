@@ -22,12 +22,13 @@ import CopyLinkButton from './meetingLayout/CopyLinkButton';
 import Participant from './Participant';
 import ToggleAudioButton from './ToggleAudioButton';
 import ToggleChatButton from './ToggleChatButton';
+import ToggleRoomLockButton from './ToggleRoomLockButton';
 import ToggleVideoButton from './ToggleVideoButton';
 import useParticipants from './videoProvider/useParticipants';
 
 export default function Room({ roomName }) {
   const { room } = useVideoContext();
-  const { room: dbRoom } = useDbRoom(roomName);
+  const { room: dbRoom, setRoom } = useDbRoom(roomName);
   const { user } = useAuth();
   const participants = useParticipants(room);
   const {
@@ -63,8 +64,14 @@ export default function Room({ roomName }) {
               <Box ml={4}>
                 <Text fontWeight="medium">/{roomName}</Text>
               </Box>
+              {isUserRoomOwner && (
+                <ToggleRoomLockButton
+                  roomId={Number(dbRoom.id)}
+                  isLocked={dbRoom.locked}
+                  setRoom={setRoom}
+                />
+              )}
             </Flex>
-
             <CopyLinkButton />
           </Nav>
         </Header>

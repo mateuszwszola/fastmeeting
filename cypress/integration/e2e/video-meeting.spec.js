@@ -28,9 +28,13 @@ describe('Video Meeting', () => {
 
         cy.task('addParticipant', { name: 'testuser1', roomName });
 
+        cy.task('addParticipant', { name: 'testuser2', roomName });
+
         cy.contains('Matthew');
 
         cy.contains('testuser1');
+
+        cy.contains('testuser2');
 
         cy.pause();
 

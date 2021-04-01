@@ -7,14 +7,22 @@ import useRoomForm from '@/components/roomForm/useRoomForm';
 import useInput from '@/hooks/useInput';
 
 function RoomForm() {
-  const { identity, roomName, isFetching } = useMeetingContext();
+  const { identity, roomName } = useMeetingContext();
   const [identityValue, handleIdentityValueChange] = useInput(identity || '');
   const [roomNameValue, handleRoomNameValueChange] = useInput(roomName || '');
-  const [isCreating, error, { onCreateToggle, onSubmit }] = useRoomForm();
+  const {
+    isCreating,
+    error,
+    isSubmitting,
+    onCreateToggle,
+    onSubmit,
+  } = useRoomForm();
 
   return (
     <RoomFormBox>
-      <RoomFormHeading>{isCreating ? 'Create' : 'Join'} room</RoomFormHeading>
+      <RoomFormHeading data-cy="room-form-heading">
+        {isCreating ? 'Create' : 'Join'} room
+      </RoomFormHeading>
       {error && (
         <Text textAlign="center" my={2}>
           {error.message}
@@ -57,7 +65,8 @@ function RoomForm() {
         <Button
           data-cy="room-form-btn"
           mt={6}
-          isLoading={isFetching}
+          isDisabled={isSubmitting}
+          isLoading={isSubmitting}
           type="submit"
           size="lg"
           w="full"
@@ -69,6 +78,8 @@ function RoomForm() {
       </Box>
 
       <Button
+        data-cy="toggle-create"
+        isDisabled={isSubmitting}
         variant="link"
         colorScheme="blue"
         onClick={onCreateToggle}

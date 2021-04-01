@@ -5,13 +5,13 @@ describe('Index page', () => {
     cy.visit('/');
   });
 
-  it('contains project heading and a button to login', () => {
-    cy.get('[data-cy="main-heading"]').should('exist');
+  it('contains project heading and button to login', () => {
+    cy.get('[data-cy=main-heading]').should('exist');
 
     cy.contains('Login');
   });
 
-  it('creates a room', () => {
+  it('creates a room and redirects to a meeting page', () => {
     cy.contains('Create room');
 
     cy.get('#name-label').contains('Display Name');
@@ -20,7 +20,7 @@ describe('Index page', () => {
 
     cy.location('pathname').should('equal', '/');
 
-    cy.get('#name').type('John Doe').should('have.value', 'John Doe');
+    cy.get('#name').type('Matthew').should('have.value', 'Matthew');
 
     cy.intercept('POST', '/api/room/create', (req) => {
       req.reply((res) => {
@@ -28,16 +28,52 @@ describe('Index page', () => {
       });
     }).as('createRoom');
 
-    cy.get('[data-cy=room-form-btn]').click();
+    cy.intercept('GET', `${Cypress.env('supabaseUrl')}/rest/v1/rooms*`, {
+      fixture: 'room',
+    }).as('getRoom');
+
+    cy.get('[data-cy=room-form-btn]').click().should('be.disabled');
+
+    cy.get('[data-cy=toggle-create]').should('be.disabled');
 
     cy.wait('@createRoom');
+
+    cy.wait('@getRoom');
 
     cy.location('pathname').should('equal', '/room-name');
   });
 
-  it('Verify room form box - join', () => {
-    cy.contains('Or join room instead').click();
+  it('joins a room and redirects to a meeting page', () => {
+    cy.get('[data-cy=toggle-create]').click();
 
     cy.contains('Join room');
+
+    cy.get('#name-label').contains('Display Name');
+
+    cy.get('#roomName-label');
+
+    cy.get('[data-cy=room-form-btn]').click();
+
+    cy.location('pathname').should('equal', '/');
+
+    cy.get('#name').type('Matthew').should('have.value', 'Matthew');
+
+    cy.get('#roomName').type('roomName').should('have.value', 'roomName');
+
+    cy.fixture('room').then((room) => {
+      room[0].slug = 'roomName';
+
+      cy.intercept('GET', `${Cypress.env('supabaseUrl')}/rest/v1/rooms*`, [
+        room[0],
+      ]).as('getRoom');
+
+      cy.get('[data-cy=room-form-btn]').click().should('be.disabled');
+
+      cy.get('[data-cy=toggle-create]').should('be.disabled');
+
+      cy.wait('@getRoom');
+
+      cy.location('pathname').should('equal', `/${room[0].slug}`);
+    });
   });
 });

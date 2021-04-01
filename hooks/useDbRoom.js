@@ -1,4 +1,4 @@
-import { fetchRoom } from '@/lib/db';
+import { getRoom } from '@/lib/db';
 import { useEffect, useReducer } from 'react';
 
 function reducer(_state, action) {
@@ -23,17 +23,17 @@ export default function useDbRoom(roomSlug) {
     error: null,
   });
 
+  const setRoom = (room) => dispatch({ type: 'success', payload: room });
+
   useEffect(() => {
     if (!roomSlug) return;
 
-    fetchRoom(roomSlug)
-      .then((room) => {
-        dispatch({ type: 'success', payload: room });
-      })
+    getRoom(roomSlug)
+      .then(setRoom)
       .catch((err) => {
         dispatch({ type: 'error', payload: err });
       });
   }, [roomSlug]);
 
-  return state;
+  return { ...state, setRoom };
 }
