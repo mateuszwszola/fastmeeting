@@ -68,6 +68,7 @@ export default function Lobby({ roomName }) {
         </FormControl>
 
         <Button
+          data-cy="continue"
           w="full"
           mt={6}
           type="submit"
@@ -95,6 +96,7 @@ export default function Lobby({ roomName }) {
         </Controllers>
       </Box>
       <Button
+        data-cy="join-meeting"
         w="full"
         mt={6}
         colorScheme="blue"

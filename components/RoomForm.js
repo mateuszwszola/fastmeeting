@@ -55,6 +55,7 @@ function RoomForm() {
         )}
 
         <Button
+          data-cy="room-form-btn"
           mt={6}
           isLoading={isFetching}
           type="submit"

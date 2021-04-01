@@ -13,6 +13,7 @@ export default function LeaveRoomButton({ children, ...props }) {
   return (
     <Box>
       <IconButton
+        data-cy="leave-meeting"
         isDisabled={isConnecting}
         onClick={handleLeave}
         icon={<FaHandPaper />}

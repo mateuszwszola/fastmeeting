@@ -8,7 +8,12 @@ function Participant({ participant, local }) {
   const { videoRef, audioRef } = useParticipant(participant);
 
   return (
-    <Box position="relative" w="full" mx="auto">
+    <Box
+      data-cy={local ? 'main-participant' : 'remote-participant'}
+      position="relative"
+      w="full"
+      mx="auto"
+    >
       <IdentityText>{participant.identity}</IdentityText>
 
       <video ref={videoRef} autoPlay={true} />

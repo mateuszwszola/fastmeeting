@@ -193,6 +193,7 @@ const SignIn = () => {
                 </FormControl>
               )}
               <Button
+                data-cy="sign-in-btn"
                 mt={4}
                 w="full"
                 type="submit"
