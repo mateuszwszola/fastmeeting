@@ -1,4 +1,5 @@
-import useChat from '@/hooks/useChat';
+import { useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import {
   Box,
   CloseButton,
@@ -11,8 +12,7 @@ import {
   useBreakpointValue,
   useColorModeValue,
 } from '@chakra-ui/react';
-import PropTypes from 'prop-types';
-import { useEffect, useRef, useState } from 'react';
+import useChat from '@/hooks/useChat';
 
 const mobileProps = {
   pos: 'absolute',
@@ -23,10 +23,10 @@ const mobileProps = {
 };
 
 const desktopProps = {
-  width: '350px',
+  width: '300px',
 };
 
-function Chat({ onClose, roomName, identity }) {
+const Chat = ({ onClose, roomName, identity }) => {
   const [message, setMessage] = useState('');
   const chatProps = useBreakpointValue({ base: mobileProps, md: desktopProps });
   const { messages, error, addMessage } = useChat(roomName);
@@ -105,7 +105,7 @@ function Chat({ onClose, roomName, identity }) {
       </Flex>
     </Grid>
   );
-}
+};
 
 Chat.propTypes = {
   onClose: PropTypes.func.isRequired,

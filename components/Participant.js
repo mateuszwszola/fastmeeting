@@ -4,19 +4,25 @@ import PropTypes from 'prop-types';
 import IdentityText from './participant/IdentityText';
 import useParticipant from './videoProvider/useParticipant';
 
-function Participant({ participant, local }) {
+function Participant({ participant, local, width, height }) {
   const { videoRef, audioRef } = useParticipant(participant);
 
   return (
     <Box
+      width={width}
+      height={height}
       data-cy={local ? 'main-participant' : 'remote-participant'}
-      position="relative"
-      w="full"
-      mx="auto"
+      pos="relative"
     >
       <IdentityText>{participant.identity}</IdentityText>
 
-      <video ref={videoRef} autoPlay={true} />
+      <Box
+        width="100%"
+        height="100%"
+        as="video"
+        ref={videoRef}
+        autoPlay={true}
+      />
       <audio ref={audioRef} autoPlay={true} muted={local} />
     </Box>
   );
@@ -28,7 +34,9 @@ Participant.defaultProps = {
 
 Participant.propTypes = {
   participant: PropTypes.object.isRequired,
-  local: PropTypes.bool.isRequired,
+  local: PropTypes.bool,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
 };
 
 export default Participant;
