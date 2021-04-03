@@ -14,6 +14,7 @@ export default function MeetingLayout({ children }) {
       <Flex
         w="full"
         height="100vh"
+        direction="column"
         justify="center"
         align="center"
         bgColor={bgColor}
