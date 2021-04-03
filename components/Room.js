@@ -80,7 +80,9 @@ function Room({ roomName }) {
         <Flex
           wrap="wrap"
           justify="center"
-          maxWidth={`calc(${width} * ${cols})`}
+          width="full"
+          maxWidth={`calc(${width}px * ${cols})`}
+          mx="auto"
         >
           <Participant
             width={width}

@@ -7,8 +7,16 @@ import debounce from 'lodash.debounce';
  * @param {number} videoCount
  * @param {number} offsetH
  * @param {number} offsetW
+ * @param {number} aspectRatioW
+ * @param {number} aspectRatioH
  */
-export default function useMeetingLayout({ videoCount, offsetH, offsetW }) {
+export default function useMeetingLayout({
+  videoCount,
+  offsetH,
+  offsetW,
+  aspectRatioW = 4,
+  aspectRatioH = 3,
+}) {
   const [result, setResult] = useState({ width: 0, height: 0, cols: 0 });
 
   useEffect(() => {
@@ -20,8 +28,8 @@ export default function useMeetingLayout({ videoCount, offsetH, offsetW }) {
         screenWidth - offsetW,
         screenHeight - offsetH,
         videoCount,
-        16,
-        9
+        aspectRatioW,
+        aspectRatioH
       );
 
       setResult({
@@ -40,7 +48,7 @@ export default function useMeetingLayout({ videoCount, offsetH, offsetW }) {
     return () => {
       window.removeEventListener('resize', debouncedRecalculateLayout);
     };
-  }, [offsetH, offsetW, videoCount]);
+  }, [aspectRatioH, aspectRatioW, offsetH, offsetW, videoCount]);
 
   return result;
 }
