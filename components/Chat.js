@@ -7,6 +7,7 @@ import {
   Grid,
   Input,
   ListItem,
+  Spinner,
   Text,
   UnorderedList,
   useBreakpointValue,
@@ -70,9 +71,11 @@ const Chat = ({ onClose, roomName, identity }) => {
 
       <Box overflowY="auto" px={4} py={2}>
         {error ? (
-          <Text>Failed to fetch</Text>
+          <Text textAlign="center">Unable to load messages</Text>
         ) : !messages ? (
-          <Text>Loading...</Text>
+          <Spinner display="block" mx="auto" />
+        ) : messages.length === 0 ? (
+          <Text textAlign="center">There are no messages</Text>
         ) : (
           <UnorderedList spacing={5} listStyleType="none" m={0}>
             {messages.map((message) => {

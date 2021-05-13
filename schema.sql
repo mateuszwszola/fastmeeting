@@ -48,5 +48,5 @@ create table public.messages (
   room_id       bigint references public.rooms not null
 );
 alter table public.messages enable row level security;
-create policy "Allow read own messages access" on public.messages for select using ( auth.uid() = 'user_id' );
+create policy "Allow read own messages access" on public.messages for select using ( auth.uid() = user_id );
 create policy "Allow individual insert access" on public.messages for insert with check ( auth.uid() = user_id );

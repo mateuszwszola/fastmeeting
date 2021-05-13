@@ -1,9 +1,5 @@
-import {
-  createMessage,
-  getMessagesByRoomId,
-  getUnlockedRoomBySlug,
-} from '@/lib/dbAdmin';
-import { retrieveInProgressRoom } from '@/lib/twilioAdmin';
+import { getRoom } from '@/lib/db';
+import { createMessage, getMessagesByRoomId } from '@/lib/dbAdmin';
 
 export default async function handler(req, res) {
   try {
@@ -13,15 +9,11 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: 'room name is required' });
     }
 
-    // Check if the room exists in a supabase and it is not locked
-    const room = await getUnlockedRoomBySlug(roomName);
+    const room = await getRoom(roomName);
 
     if (!room) {
       return res.status(404).json({ message: `Room ${roomName} not found` });
     }
-
-    // Make sure meeting is in progress
-    await retrieveInProgressRoom(roomName);
 
     if (req.method === 'GET') {
       const messages = await getMessagesByRoomId(room.id);
