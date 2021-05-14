@@ -14,6 +14,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import useChat from '@/hooks/useChat';
+import { useMeetingContext } from '@/lib/MeetingContext';
 
 const mobileProps = {
   pos: 'absolute',
@@ -27,10 +28,11 @@ const desktopProps = {
   width: '300px',
 };
 
-const Chat = ({ onClose, roomName, identity }) => {
+const Chat = ({ onClose, roomName }) => {
   const [message, setMessage] = useState('');
   const chatProps = useBreakpointValue({ base: mobileProps, md: desktopProps });
   const { messages, error, addMessage } = useChat(roomName);
+  const { userDisplayName } = useMeetingContext();
   const bgColor = useColorModeValue('white', 'black');
   const borderColor = useColorModeValue('gray.200', 'gray.800');
   const messagesEndRef = useRef(null);
@@ -48,7 +50,7 @@ const Chat = ({ onClose, roomName, identity }) => {
     if (e.keyCode === 13) {
       const messageBody = {
         message,
-        identity,
+        identity: userDisplayName,
       };
       addMessage(messageBody, {
         // Clear message input on success
@@ -113,7 +115,6 @@ const Chat = ({ onClose, roomName, identity }) => {
 Chat.propTypes = {
   onClose: PropTypes.func.isRequired,
   roomName: PropTypes.string.isRequired,
-  identity: PropTypes.string.isRequired,
 };
 
 export default Chat;

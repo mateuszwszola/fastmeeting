@@ -7,6 +7,8 @@ import useParticipant from './videoProvider/useParticipant';
 function Participant({ participant, local, width, height }) {
   const { videoRef, audioRef } = useParticipant(participant);
 
+  const identity = JSON.parse(participant.identity);
+
   return (
     <Box
       width={width}
@@ -14,7 +16,9 @@ function Participant({ participant, local, width, height }) {
       data-cy={local ? 'main-participant' : 'remote-participant'}
       pos="relative"
     >
-      <IdentityText>{participant.identity}</IdentityText>
+      <IdentityText>
+        {identity.name} {local ? '(You)' : ''}
+      </IdentityText>
 
       <Box
         width="100%"
