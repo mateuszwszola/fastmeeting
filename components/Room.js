@@ -118,13 +118,7 @@ function Room({ roomName }) {
         </Controllers>
       </Grid>
 
-      {isChatOpen && (
-        <Chat
-          onClose={onChatClose}
-          roomName={roomName}
-          identity={user?.full_name || room.localParticipant.identity}
-        />
-      )}
+      {isChatOpen && <Chat onClose={onChatClose} roomName={roomName} />}
     </Flex>
   );
 }

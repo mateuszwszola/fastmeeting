@@ -13,7 +13,7 @@ import ToggleVideoButton from './ToggleVideoButton';
 import VideoPreview from './VideoPreview';
 
 export default function Lobby({ roomName }) {
-  const { joinRoom, isFetching, identity } = useMeetingContext();
+  const { joinRoom, isFetching, userDisplayName } = useMeetingContext();
   const { user } = useAuth();
   const {
     connect,
@@ -23,14 +23,14 @@ export default function Lobby({ roomName }) {
   } = useVideoContext();
   const [step, setStep] = useState(0);
   const [identityValue, setIdentityValue] = useState(
-    user?.full_name || identity
+    user?.full_name || userDisplayName
   );
 
   useEffect(() => {
-    if (identity || user?.full_name) {
-      setIdentityValue(identity || user?.full_name);
+    if (userDisplayName || user?.full_name) {
+      setIdentityValue(userDisplayName || user?.full_name);
     }
-  }, [identity, user]);
+  }, [userDisplayName, user]);
 
   useEffect(() => {
     if (step === 1) {
