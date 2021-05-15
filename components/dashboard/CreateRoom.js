@@ -44,7 +44,7 @@ CreateRoomInput.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-const CreateRoom = ({ onAddRoom, currentRoomsNumber }) => {
+const CreateRoom = ({ onAddRoom, disabled }) => {
   const [newRoomName, setNewRoomName] = useState('');
   const [isCreatingRoom, setIsCreatingRoom] = useState(false);
 
@@ -56,28 +56,24 @@ const CreateRoom = ({ onAddRoom, currentRoomsNumber }) => {
     }
   };
 
-  const onAddRoomButtonClick = () => {
-    setIsCreatingRoom(true);
-  };
-
-  const onCancelButtonClick = () => {
-    setIsCreatingRoom(false);
-  };
-
   return (
     <Flex flexDir="column" my={[4, 0]} alignItems={['flex-start', 'flex-end']}>
       {isCreatingRoom ? (
         <ButtonGroup variant="outline" spacing="4">
-          <Button onClick={handleAddRoom} colorScheme="blue">
+          <Button
+            disabled={!newRoomName}
+            onClick={handleAddRoom}
+            colorScheme="blue"
+          >
             Add
           </Button>
-          <Button onClick={onCancelButtonClick}>Cancel</Button>
+          <Button onClick={() => setIsCreatingRoom(false)}>Cancel</Button>
         </ButtonGroup>
       ) : (
         <Button
-          isDisabled={currentRoomsNumber >= 3}
+          isDisabled={disabled}
           colorScheme="blue"
-          onClick={onAddRoomButtonClick}
+          onClick={() => setIsCreatingRoom(true)}
         >
           Add room
         </Button>
@@ -95,7 +91,7 @@ const CreateRoom = ({ onAddRoom, currentRoomsNumber }) => {
 
 CreateRoom.propTypes = {
   onAddRoom: PropTypes.func.isRequired,
-  currentRoomsNumber: PropTypes.number,
+  disabled: PropTypes.bool.isRequired,
 };
 
 export default CreateRoom;

@@ -37,7 +37,7 @@ const SkeletonRow = ({ width }) => (
 );
 
 const RoomListItem = ({ room, onDelete }) => {
-  const [isEditting, setIsEditting] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   return (
     <Tr>
@@ -50,16 +50,16 @@ const RoomListItem = ({ room, onDelete }) => {
         </NextLink>
       </Td>
       <Td whiteSpace="nowrap" textAlign="right">
-        {isEditting ? (
+        {isEditing ? (
           <ButtonGroup size="sm" variant="outline" spacing="6">
             <Button colorScheme="red" onClick={onDelete}>
               Delete
             </Button>
-            <CloseButton onClick={() => setIsEditting(false)} />
+            <CloseButton onClick={() => setIsEditing(false)} />
           </ButtonGroup>
         ) : (
           <Button
-            onClick={() => setIsEditting(true)}
+            onClick={() => setIsEditing(true)}
             variant="link"
             colorScheme="blue"
           >
