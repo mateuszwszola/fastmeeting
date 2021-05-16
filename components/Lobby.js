@@ -12,6 +12,8 @@ import ToggleAudioButton from './ToggleAudioButton';
 import ToggleVideoButton from './ToggleVideoButton';
 import VideoPreview from './VideoPreview';
 
+const steps = ['identity', 'media'];
+
 export default function Lobby({ roomName }) {
   const { joinRoom, isFetching, userDisplayName } = useMeetingContext();
   const { user } = useAuth();
@@ -21,19 +23,19 @@ export default function Lobby({ roomName }) {
     isAcquiringLocalTracks,
     getAudioAndVideoTracks,
   } = useVideoContext();
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(steps[0]);
   const [identityValue, setIdentityValue] = useState(
-    user?.full_name || userDisplayName
+    userDisplayName || user?.full_name || ''
   );
 
   useEffect(() => {
-    if (userDisplayName || user?.full_name) {
-      setIdentityValue(userDisplayName || user?.full_name);
+    if (!userDisplayName && user?.full_name) {
+      setIdentityValue(user?.full_name);
     }
-  }, [userDisplayName, user]);
+  }, [user?.full_name, userDisplayName]);
 
   useEffect(() => {
-    if (step === 1) {
+    if (step === steps[1]) {
       getAudioAndVideoTracks();
     }
   }, [getAudioAndVideoTracks, step]);
@@ -52,7 +54,7 @@ export default function Lobby({ roomName }) {
         as="form"
         onSubmit={(e) => {
           e.preventDefault();
-          setStep(1);
+          setStep(steps[1]);
         }}
       >
         <FormControl id="name">
@@ -112,7 +114,7 @@ export default function Lobby({ roomName }) {
 
   return (
     <Box w="full" maxW="sm" mx="auto" alignSelf="center">
-      {step === 0 ? identityStep : previewStep}
+      {step === steps[0] ? identityStep : previewStep}
     </Box>
   );
 }

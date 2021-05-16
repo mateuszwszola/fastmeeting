@@ -19,7 +19,7 @@ function Meeting() {
   return (
     <MeetingLayout>
       {error ? (
-        <Text>Something went wrong...</Text>
+        <Text>Unable to load a room</Text>
       ) : isLoading ? (
         <Spinner size="xl" />
       ) : !dbRoom ? (
