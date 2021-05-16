@@ -7,9 +7,11 @@ import useRoomForm from '@/components/roomForm/useRoomForm';
 import useInput from '@/hooks/useInput';
 
 function RoomForm() {
-  const { identity, roomName } = useMeetingContext();
-  const [identityValue, handleIdentityValueChange] = useInput(identity || '');
-  const [roomNameValue, handleRoomNameValueChange] = useInput(roomName || '');
+  const { userDisplayName } = useMeetingContext();
+  const [identityValue, handleIdentityValueChange] = useInput(
+    userDisplayName || ''
+  );
+  const [roomNameValue, handleRoomNameValueChange] = useInput('');
   const {
     isCreating,
     error,
@@ -32,7 +34,7 @@ function RoomForm() {
       <Box
         as="form"
         onSubmit={onSubmit({
-          identity: identityValue,
+          userDisplayName: identityValue,
           roomName: roomNameValue,
         })}
         mt={6}
