@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/media-has-caption */
+import { useMeetingContext } from '@/lib/MeetingContext';
 import { Box } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import IdentityText from './participant/IdentityText';
@@ -6,8 +7,7 @@ import useParticipant from './videoProvider/useParticipant';
 
 function Participant({ participant, local, width, height }) {
   const { videoRef, audioRef } = useParticipant(participant);
-
-  const identity = JSON.parse(participant.identity);
+  const { userDisplayName } = useMeetingContext();
 
   return (
     <Box
@@ -17,7 +17,7 @@ function Participant({ participant, local, width, height }) {
       pos="relative"
     >
       <IdentityText>
-        {identity.name} {local ? '(You)' : ''}
+        {userDisplayName} {local ? '(You)' : ''}
       </IdentityText>
 
       <Box

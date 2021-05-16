@@ -18,7 +18,7 @@ export default function Account() {
     <Layout pageName="Account">
       <Box w="full" maxW="960px" px={4} pt={16} mx="auto">
         <Flex justify="space-between">
-          <Heading as="h2" size="xl">
+          <Heading as="h2" size="lg">
             Your Account
           </Heading>
 
