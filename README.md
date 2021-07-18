@@ -2,6 +2,8 @@
 
 Easily create online meetings with video and text chat.
 
+![project-preview](https://res.cloudinary.com/dtti654qn/image/upload/v1626618841/github-projects/fastmeeting_ywctqc.png)
+
 ## Features
 
 - [x] Voice & Video
